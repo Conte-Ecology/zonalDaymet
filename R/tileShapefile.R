@@ -1,7 +1,7 @@
 #' @title Break shapefile into tiles
 #'
 #' @description
-#' \code{tileShapefile} breaks up large shapefiles into up into 2 degree tiles. to keep R from having memory issues when reading Daymet records.
+#' \code{tileShapefile} breaks up large shapefiles into up into 2 degree tiles to keep R from having memory issues when reading Daymet records.
 #'
 #' @param shapefile A SpatialPolygonsDataFrame of the zones which will be assigned climate records. The object should be in the WGS geographic coordinate system (same as the Daymet NetCDF files,The proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0").
 #'

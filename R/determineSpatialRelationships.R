@@ -108,41 +108,43 @@ determineSpatialRelationships <- function(zonesShapefile, zoneField, exampleDaym
     
   # Nearest Point
   # -------------
-  # Determine the polygons that do not contain any Daymet points
-  missingPolygons <- zonesShapefile[!zonesShapefile@data[,zoneField] %in% polygonPoints[,zoneField],]
-    
-  # Associate the missing polygon IDs with their centroids
-  missingCentroids <- data.frame(missingPolygons@data[,zoneField], coordinates(missingPolygons) )
-  names(missingCentroids) <- c(zoneField, 'LON', 'LAT')
-    
-  # List of missing polygon IDs
-  missingIDs <- missingPolygons@data[,zoneField]
-    
-  # Create storage for Daymet point assignment
-  nearPoints <- as.data.frame(matrix(nrow = length(missingIDs), ncol = 3))
-  names(nearPoints) <- c(zoneField, 'Longitude', 'Latitude')
-    
-  # Iterate through all polygons without Daymet points and assign the nearest point
-  for ( i in seq_along(missingIDs) ) {
+  if (any(zonesShapefile@data[,zoneField] %in% polygonPoints[,zoneField] == FALSE)){
       
-    # Polygon centroid coordinates
-    tempLat <- missingCentroids$LAT[missingCentroids[,zoneField] == missingIDs[i]]
-    tempLon <- missingCentroids$LON[missingCentroids[,zoneField] == missingIDs[i]]
+    # Determine the polygons that do not contain any Daymet points
+    missingPolygons <- zonesShapefile[!zonesShapefile@data[,zoneField] %in% polygonPoints[,zoneField],]
       
-    # Determine the nearest Daymet point
-    distances <- spDistsN1(as.matrix(shapePoints), c(tempLon, tempLat), longlat = TRUE)
-    minDist <- min(distances)
-    distPos <- which(distances == minDist)[1]
+    # Associate the missing polygon IDs with their centroids
+    missingCentroids <- data.frame(missingPolygons@data[,zoneField], coordinates(missingPolygons) )
+    names(missingCentroids) <- c(zoneField, 'LON', 'LAT')
       
-    # Enter values into dataframe
-    nearPoints[i ,zoneField] <- missingIDs[i] 
-    nearPoints$Longitude[i]  <- shapePoints[distPos, 1]
-    nearPoints$Latitude[i]   <- shapePoints[distPos, 2]
-  }
-    
-  # Join the two versions of point assignments
-  finalPoints <- rbind(polygonPoints[,c(zoneField, 'Longitude', 'Latitude')], nearPoints)
-    
+    # List of missing polygon IDs
+    missingIDs <- missingPolygons@data[,zoneField]
+      
+    # Create storage for Daymet point assignment
+    nearPoints <- as.data.frame(matrix(nrow = length(missingIDs), ncol = 3))
+    names(nearPoints) <- c(zoneField, 'Longitude', 'Latitude')
+      
+    # Iterate through all polygons without Daymet points and assign the nearest point
+    for ( i in seq_along(missingIDs) ) {
+        
+      # Polygon centroid coordinates
+      tempLat <- missingCentroids$LAT[missingCentroids[,zoneField] == missingIDs[i]]
+      tempLon <- missingCentroids$LON[missingCentroids[,zoneField] == missingIDs[i]]
+        
+      # Determine the nearest Daymet point
+      distances <- spDistsN1(as.matrix(shapePoints), c(tempLon, tempLat), longlat = TRUE)
+      minDist <- min(distances)
+      distPos <- which(distances == minDist)[1]
+        
+      # Enter values into dataframe
+      nearPoints[i ,zoneField] <- missingIDs[i] 
+      nearPoints$Longitude[i]  <- shapePoints[distPos, 1]
+      nearPoints$Latitude[i]   <- shapePoints[distPos, 2]
+    }
+      
+    # Join the two versions of point assignments
+    finalPoints <- rbind(polygonPoints[,c(zoneField, 'Longitude', 'Latitude')], nearPoints)
+  } else{finalPoints <- polygonPoints}   
   
   # Determine the position in the sub-array
   # ----------------------------------------

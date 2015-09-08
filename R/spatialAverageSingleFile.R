@@ -58,15 +58,12 @@ spatialAverageSingleFile <- function(daymetMosaicFilePath, spatialIndeces, zoneF
     selection <- as.matrix(data.frame(shapefileIndeces[c('subRow', 'subCol')], sel) )
     varPoints[,sel+1] <- shapeVar[selection]
   }
-    
-  # Add duplicate column Because dplyr struggles with variable column names
-  varPoints$ZONE <- varPoints[,zoneField]
-  varMeans <-  group_by(varPoints, ZONE) %>% 
-    summarise_each(funs(mean))%>%
-    group_by() %>%
-    dplyr::select( -ZONE )
-    
-    
+  
+  # Take the mean of the points inside a catchment
+  varMeans <-  group_by_(varPoints, zoneField) %>% 
+    summarise_each(funs(mean(.,na.rm = T)))%>%
+    ungroup()  
+  
   # Melt means into output format
   varMelt <- melt(varMeans, id=c(zoneField))
   names(varMelt) <- c(zoneField, 'DayOfYear', variable)
