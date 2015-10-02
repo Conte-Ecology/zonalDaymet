@@ -6,3 +6,14 @@ Description: What the package does (one paragraph)
 Depends: R (>= 3.1.2)
 License: What license is it under?
 LazyData: true
+Imports:
+	data.table,
+	dplyr,
+	lubridate,
+	ncdf4,
+	raster,
+	reshape2,
+	rgdal,
+	RSQLite,
+	RSQLite.extfuns,
+	sp

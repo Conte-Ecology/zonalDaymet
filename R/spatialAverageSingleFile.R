@@ -71,7 +71,11 @@ spatialAverageSingleFile <- function(daymetMosaicFilePath, spatialIndeces, zoneF
   varMelt$Year <- YR
   varMelt$Date <- paste(parse_date_time(paste0(varMelt$Year,"-", varMelt$DayOfYear), "y-j", tz = "EST") )
   
-  output <- varMelt[,c(zoneField, variable, "Date")]
+  output <- varMelt[,c(zoneField, "Date", variable)]
   
+  # Delete objects
+  rm(mosaicIndeces, shapefileIndeces, variable, dOY, shapeVar, varPoints, varMeans, varMelt)
+  
+  # Output result
   return(output)
 }

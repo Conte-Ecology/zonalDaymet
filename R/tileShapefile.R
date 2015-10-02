@@ -4,13 +4,14 @@
 #' \code{tileShapefile} breaks up large shapefiles into up into 2 degree tiles to keep R from having memory issues when reading Daymet records.
 #'
 #' @param shapefile A SpatialPolygonsDataFrame of the zones which will be assigned climate records. The object should be in the WGS geographic coordinate system (same as the Daymet NetCDF files,The proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0").
+#' @param tileDegree A numeric value of either 1 or 2 indicating the length of the tile edge in lat/lon degrees.
 #'
 #' @details
 #' Polygons are assigned to tiles based on where their centroids are located.
 #' This function only works for shapefiles with units that are lat/lon. Make sure the shapefile is in the daymet coordinate system before running this function on it.
-
+#'
 #' @export 
-tileShapefile <- function(shapefile){
+tileShapefile <- function(shapefile, tileDegree){
   
   require(raster)
   require(maptools)
@@ -31,8 +32,16 @@ tileShapefile <- function(shapefile){
   names(centroids) <- c('X', 'Y')
     
   # Create tile bounds (by 2 degrees) for dividing catchments. Add 1 to ensure a last tile is not missed if there is an odd difference.
-  Xs <- seq(from = xmin, to = xmax+1, by = 2)
-  Ys <- seq(from = ymin, to = ymax+1, by = 2)
+  
+  if (tileDegree == 1) {
+    Xs <- seq(from = xmin, to = xmax, by = 1)
+    Ys <- seq(from = ymin, to = ymax, by = 1)     
+  }
+  
+  if (tileDegree == 2) {  
+    Xs <- seq(from = xmin, to = xmax+1, by = 2)
+    Ys <- seq(from = ymin, to = ymax+1, by = 2)
+  }
     
   # Get number of X and Y tiles for looping
   XL <- length(Xs) - 1

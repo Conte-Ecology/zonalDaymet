@@ -144,6 +144,10 @@ determineSpatialRelationships <- function(zonesShapefile, zoneField, exampleDaym
       
     # Join the two versions of point assignments
     finalPoints <- rbind(polygonPoints[,c(zoneField, 'Longitude', 'Latitude')], nearPoints)
+    
+    # Delete objects
+    rm(missingPolygons, missingCentroids, missingIDs, nearPoints)
+    
   } else{finalPoints <- polygonPoints}   
   
   # Determine the position in the sub-array
@@ -167,5 +171,9 @@ determineSpatialRelationships <- function(zonesShapefile, zoneField, exampleDaym
   
   print("Spatial relationships complete.")
   
+  # Delete objects
+  rm(mosaicLat, mosaicLon, shapeExtent, arrayIndeces, minRow, maxRow, minCol, maxCol, countx, county, shapePointsSpPts, overPoints, spatialJoin, polygonPoints, finalPoints, shapefileIndeces, mosaicIndeces)
+  
+  # Output result
   return(output)
 }
