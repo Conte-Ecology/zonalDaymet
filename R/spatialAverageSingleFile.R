@@ -1,50 +1,57 @@
-#' @title Spatially average Daymet cells by zone
+#' @title Spatially average multiple climate records by zone
 #'
-#' @description Returns the spatial average from a single Daymet file for the zones specified in the "spatialIndeces" input object.
-#'
-#' @param daymetMosaicFilePath Character string of the file path to the daymet file 
-#' @param spatialIndeces List of 2 dataframes describing the spatial relationships between Daymet NetCDFs and shapefile provided. This is the direct output from the "determineSpatialRelationships" function.
-#' @param zoneField Character string of the field name describing the values that define the zones
+#' @description 
+#' \code{spatialAverageSingleFile} is an internal function that returns the spatial average climte records that fall inside the zones specified in the "spatialIndeces" input object.
+#' 
+#' @param mosaicFilePath Character string of the file path to the netCDF mosaic file containing the climate records.
+#' @param spatialIndeces List of 2 dataframes describing the spatial relationships between netCDFs and SpatialPolygonsDataFrame provided. This is the direct output from the internal \code{determineSpatialRelationships} function.
+#' @param zoneField Character string of the field name describing the unique ID values that define the zones.
 
-
-spatialAverageSingleFile <- function(daymetMosaicFilePath, spatialIndeces, zoneField){
+spatialAverageSingleFile <- function(mosaicFilePath, spatialIndeces, zoneField){
   
-  require(lubridate)
-  require(ncdf4)
-  require(reshape2)
-  
+  # Access pre-existing indeces
+  # --------------------------- 
   mosaicIndeces <- spatialIndeces$mosaicIndeces
   shapefileIndeces <- spatialIndeces$shapefileIndeces
   
-  NetCDF <- nc_open( file.path(daymetMosaicFilePath) )
+  
+  # Access variables from netCDF
+  # ----------------------------
+  netCDF <- ncdf4::nc_open(file.path(mosaicFilePath))
   
   # Get the year and variable directly from netcdf file
-  YR <- ncatt_get( NetCDF, varid = 0, attname="start_year")$value
-  variable <- names(NetCDF$var)[names(NetCDF$var) %in% c("tmax", "tmin", "prcp", "dayl", "srad", "vp", "swe")]
+  YR <- ncdf4::ncatt_get(netCDF, varid = 0, attname="start_year")$value
+  variable <- names(netCDF$var)[names(netCDF$var) %in% c("tmax", "tmin", "prcp", "dayl", "srad", "vp", "swe")]
     
-  #Read "Day of Year" and make it start with 1
-  dOY <- ncvar_get( nc = NetCDF, varid="yearday", start = 1, count = NetCDF$var$yearday$varsize  )
+  #Read "Day of Year" and adjust it to start with 1 instead of 0
+  dOY <- ncdf4::ncvar_get(nc    = netCDF,
+                          varid = "yearday",
+                          start = 1,
+                          count = netCDF$var$yearday$varsize)
   dOY <- dOY + 1
   
   # Read variable
-  shapeVar <- ncvar_get( nc   = NetCDF, 
-                         varid = variable,  
-                         start = c(mosaicIndeces$minRow, mosaicIndeces$minCol, 1),
-                         count = c(mosaicIndeces$countx, mosaicIndeces$county, length(dOY) ) )
-  
+  shapeVar <- ncdf4::ncvar_get(nc    = netCDF,
+                               varid = variable,
+                               start = c(mosaicIndeces$minRow, mosaicIndeces$minCol, 1),
+                               count = c(mosaicIndeces$countx, mosaicIndeces$county, length(dOY)))
+
+
   # Index and replace missing value with NA
   # ---------------------------------------
   # Determine the currently assigned missing value
-  for( h in 1:length(NetCDF$var) ){
-    if ( NetCDF$var[[h]]$name == variable ) {varIndex <- h}
+  for (h in 1:length(netCDF$var)) {
+    if (netCDF$var[[h]]$name == variable) {
+      varIndex <- h
+    }
   }
-  missingValue <- NetCDF$var[[varIndex]]$missval
+  missingValue <- netCDF$var[[varIndex]]$missval
     
   # Replace
   shapeVar <- replace(shapeVar, shapeVar == missingValue, NA)
     
-  # Close the NetCDF connection
-  nc_close(NetCDF)
+  # Close the netCDF connection
+  ncdf4::nc_close(netCDF)
     
   # Spatially average Daymet records for zones
   # ------------------------------------------
@@ -61,21 +68,19 @@ spatialAverageSingleFile <- function(daymetMosaicFilePath, spatialIndeces, zoneF
   
   # Take the mean of the points inside a catchment
   varMeans <-  group_by_(varPoints, zoneField) %>% 
-    summarise_each(funs(mean(.,na.rm = T)))%>%
-    ungroup()  
+                  summarise_each(funs(mean(.,na.rm = T))) %>%
+                  ungroup()
   
   # Melt means into output format
-  varMelt <- melt(varMeans, id=c(zoneField))
+  varMelt <- reshape2::melt(varMeans, id=c(zoneField))
   names(varMelt) <- c(zoneField, 'DayOfYear', variable)
   varMelt$DayOfYear <- as.numeric(varMelt$DayOfYear)
   varMelt$Year <- YR
-  varMelt$Date <- paste(parse_date_time(paste0(varMelt$Year,"-", varMelt$DayOfYear), "y-j", tz = "EST") )
+  varMelt$Date <- paste(lubridate::parse_date_time(paste0(varMelt$Year,"-", varMelt$DayOfYear), "y-j", tz = "EST") )
   
   output <- varMelt[,c(zoneField, "Date", variable)]
-  
-  # Delete objects
-  rm(mosaicIndeces, shapefileIndeces, variable, dOY, shapeVar, varPoints, varMeans, varMelt)
-  
+   
   # Output result
   return(output)
-}
+
+}# End function

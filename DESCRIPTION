@@ -1,19 +1,26 @@
 Package: spatialAverageDaymet
-Title: What the package does (one line)
-Version: 0.1
-Authors@R: "First Last <first.last@example.com> [aut, cre]"
-Description: What the package does (one paragraph)
-Depends: R (>= 3.1.2)
+Title: A toolset to process Daymet climate records
+Version: 1.0
+Authors@R: person("Kyle", "O'Neil", email = "koneil@usgs.gov", role = c("aut", "cre"))
+Description: The package provides tools to download NetCDF climate mosaics 
+	from the Daymet THREDDS Server, spatially average climate records over 
+	user-specified spatial polygons, process shapefiles into manageable 
+	pieces within the R environment to avoid memory issues, and return 
+	subsets from the climate mosaics given latitude/longitude coordinate bounds.
+	Functionality is provided to return spatial averages as either a dataframe 
+	in the current R environment or write directly to SQLite database. A function
+	is available to simplify selecting records from the database.
+Depends:
+	R (>= 3.1.2),
+	dplyr (>= 0.4.3)
 License: What license is it under?
 LazyData: true
 Imports:
-	data.table,
-	dplyr,
-	lubridate,
-	ncdf4,
-	raster,
-	reshape2,
-	rgdal,
-	RSQLite,
-	RSQLite.extfuns,
-	sp
+	lubridate (>= 1.3.3),
+	ncdf4 (>= 1.12),
+	raster (>= 2.4-20),
+	reshape2 (>= 1.4.1),
+	sp (>= 1.2-0)
+Suggests:
+	RSQLite (>= 1.0.0)
+

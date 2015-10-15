@@ -2,20 +2,21 @@
 % Please edit documentation in R/tileShapefile.R
 \name{tileShapefile}
 \alias{tileShapefile}
-\title{Break shapefile into tiles}
+\title{Divide SpatialPolygonsDataFrame into smaller tiles}
 \usage{
 tileShapefile(shapefile, tileDegree)
 }
 \arguments{
-\item{shapefile}{A SpatialPolygonsDataFrame of the zones which will be assigned climate records. The object should be in the WGS geographic coordinate system (same as the Daymet NetCDF files,The proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0").}
+\item{shapefile}{A SpatialPolygonsDataFrame of the zones which will be assigned climate records. The object should be in the WGS geographic coordinate system to match the netCDF files (proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0").}
 
 \item{tileDegree}{A numeric value of either 1 or 2 indicating the length of the tile edge in lat/lon degrees.}
 }
 \description{
-\code{tileShapefile} breaks up large shapefiles into up into 2 degree tiles to keep R from having memory issues when reading Daymet records.
+The \code{tileShapefile} function splits large shapefiles into up into 1 or 2 degree tiles to prevent memory issues when reading Daymet records.
 }
 \details{
 Polygons are assigned to tiles based on where their centroids are located.
-This function only works for shapefiles with units that are lat/lon. Make sure the shapefile is in the daymet coordinate system before running this function on it.
+The spatial object should be in the Daymet coordinate system before executing the function.
+This function only works for SpatialPolygonsDataFrame with units that are lat/lon.  The \code{spTransform} function can be used to transform the object from a projected to a geographic coordinate system.
 }
 

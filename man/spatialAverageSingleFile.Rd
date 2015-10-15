@@ -2,18 +2,18 @@
 % Please edit documentation in R/spatialAverageSingleFile.R
 \name{spatialAverageSingleFile}
 \alias{spatialAverageSingleFile}
-\title{Spatially average Daymet cells by zone}
+\title{Spatially average multiple climate records by zone}
 \usage{
-spatialAverageSingleFile(daymetMosaicFilePath, spatialIndeces, zoneField)
+spatialAverageSingleFile(mosaicFilePath, spatialIndeces, zoneField)
 }
 \arguments{
-\item{daymetMosaicFilePath}{Character string of the file path to the daymet file}
+\item{mosaicFilePath}{Character string of the file path to the netCDF mosaic file containing the climate records.}
 
-\item{spatialIndeces}{List of 2 dataframes describing the spatial relationships between Daymet NetCDFs and shapefile provided. This is the direct output from the "determineSpatialRelationships" function.}
+\item{spatialIndeces}{List of 2 dataframes describing the spatial relationships between netCDFs and SpatialPolygonsDataFrame provided. This is the direct output from the internal \code{determineSpatialRelationships} function.}
 
-\item{zoneField}{Character string of the field name describing the values that define the zones}
+\item{zoneField}{Character string of the field name describing the unique ID values that define the zones.}
 }
 \description{
-Returns the spatial average from a single Daymet file for the zones specified in the "spatialIndeces" input object.
+\code{spatialAverageSingleFile} is an internal function that returns the spatial average climte records that fall inside the zones specified in the "spatialIndeces" input object.
 }
 
