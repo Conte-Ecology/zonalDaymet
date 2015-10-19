@@ -1,7 +1,7 @@
 #' @title Assign climate record to zones
 #'
 #' @description 
-#' \code{assignClimateRecordByZonesToDatabase} Spatially averages climate records from the Daymet netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database. If the shapefile is large enough to cause memory problems, the function can be iterated over the results of the "tileShapefile" function.
+#' \code{assignZonalRecordsToDatabase} Spatially averages climate records from the Daymet netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database. If the shapefile is large enough to cause memory problems, the function can be iterated over the results of the "tileShapefile" function.
 #'
 #' @param zonesShapefile A SpatialPolygonsDataFrame of the zones which will be assigned climate records. The object should have a unique ID column and be in the WGS geographic coordinate system (same as the Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0").
 #' @param zoneField Character string of the field name describing the unique ID values that define the zones.
@@ -13,7 +13,7 @@
 #' @param databaseTableName Character string of the name of the table to create/write to in the database.
 #' 
 #' @examples
-#' assignClimateRecordByZonesToDatabase(spatialPolygonsDataFrame, 
+#' assignZonalRecordsToDatabase(spatialPolygonsDataFrame, 
 #'                                        "UNIQUE_ID",
 #'                                        "integer",
 #'                                        "C:/USER/Data/Daymet",
@@ -23,13 +23,12 @@
 #'                                        "climate_record")
 #' 
 #' @export 
-assignClimateRecordByZonesToDatabase <- function(zonesShapefile, zoneField, zoneFieldType = NULL, mosaicDirectory, variables, years, databaseFilePath = NULL, databaseTableName = NULL){
+assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldType = NULL, mosaicDirectory, variables, years, databaseFilePath = NULL, databaseTableName = NULL){
     
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop("The RSQLite is required for this function to work. Please install it.",
          call. = FALSE)
   }
-  print(requireNamespace("RSQLite", quietly = TRUE))
   
   
   # Create and/or connect to the database
@@ -41,7 +40,7 @@ assignClimateRecordByZonesToDatabase <- function(zonesShapefile, zoneField, zone
     print("Database already exists. Processed records will be added to existing database.")
   }
   
-  database <- RSQLite::dbConnect(SQLite(), databaseFilePath)
+  database <- RSQLite::dbConnect(RSQLite::SQLite(), databaseFilePath)
   
   
   # Reference NetCDF indeces

@@ -31,10 +31,10 @@ to the polygon.
 ## Software Requirements
 
 
-# Sample Workflow
+## Sample Workflow
 
 
-# Contact Info
+## Contact Info
 
 Kyle O'Neil  
 koneil@usgs.gov  

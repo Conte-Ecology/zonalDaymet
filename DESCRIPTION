@@ -13,7 +13,7 @@ Description: The package provides tools to download NetCDF climate mosaics
 Depends:
 	R (>= 3.1.2),
 	dplyr (>= 0.4.3)
-License: What license is it under?
+License: file LICENSE
 LazyData: true
 Imports:
 	lubridate (>= 1.3.3),
@@ -22,5 +22,5 @@ Imports:
 	reshape2 (>= 1.4.1),
 	sp (>= 1.2-0)
 Suggests:
-	RSQLite (>= 1.0.0)
+	RSQLite
 

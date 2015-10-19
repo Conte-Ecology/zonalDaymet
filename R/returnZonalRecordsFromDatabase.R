@@ -1,7 +1,7 @@
 #' @title Return climate records from SQLite database.
 #'
 #' @description 
-#' \code{returnClimateRecordFromDatabase} Returns the climate records for specified zones as a dataframe from a SQLite database.
+#' \code{returnZonalRecordsFromDatabase} Returns the climate records for specified zones as a dataframe from a SQLite database.
 #'
 #' @param databaseFilePath Character string of the file path to the SQLite database to access.
 #' @param databaseTableName Character string of the name of the table to access in the database.
@@ -12,7 +12,7 @@
 #' @param variables Vector of character strings indicating the variables to return
 #' 
 #' @examples
-#' returnClimateRecordFromDatabase("C:/USER/Data/Databases/DaymetDB", 
+#' returnZonalRecordsFromDatabase("C:/USER/Data/Databases/DaymetDB", 
 #'                                 "climate_record",
 #'                                 "UNIQUE_ID",
 #'                                 "1980-01-01",
@@ -20,7 +20,7 @@
 #'                                 c(1, 2, 3, 4, 5),
 #'                                 c("tmin", "tmax", "prcp"))
 #' @export 
-returnClimateRecordFromDatabase <- function(databaseFilePath, databaseTableName, zoneField, startDate, endDate, zoneIDs, variables){
+returnZonalRecordsFromDatabase <- function(databaseFilePath, databaseTableName, zoneField, startDate, endDate, zoneIDs, variables){
  
   # Connect to the database
   dBase <- src_sqlite(databaseFilePath, create = F)
