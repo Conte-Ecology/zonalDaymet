@@ -1,4 +1,4 @@
-Package: spatialAverageDaymet
+Package: zonalDaymet
 Title: A toolset to process Daymet climate records
 Version: 1.0
 Authors@R: person("Kyle", "O'Neil", email = "koneil@usgs.gov", role = c("aut", "cre"))
@@ -10,17 +10,19 @@ Description: The package provides tools to download NetCDF climate mosaics
 	Functionality is provided to return spatial averages as either a dataframe 
 	in the current R environment or write directly to SQLite database. A function
 	is available to simplify selecting records from the database.
-Depends:
+Depends: 
 	R (>= 3.1.2),
 	dplyr (>= 0.4.3)
 License: file LICENSE
 LazyData: true
-Imports:
+Imports: 
 	lubridate (>= 1.3.3),
 	ncdf4 (>= 1.12),
 	raster (>= 2.4-20),
 	reshape2 (>= 1.4.1),
 	sp (>= 1.2-0)
-Suggests:
-	RSQLite
-
+Suggests: 
+	RSQLite,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
