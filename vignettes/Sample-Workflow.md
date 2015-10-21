@@ -1,7 +1,7 @@
 ---
 title: "Sample Workflow"
 author: "Kyle O'Neil"
-date: "`r Sys.Date()`"
+date: "2015-10-21"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Sample Workflow}
@@ -15,52 +15,11 @@ Vignettes are long form documentation commonly included in packages. Because the
 - Has a smaller default figure size
 - Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
 
-## Vignette Info
-
-Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
-
 #collapse = TRUE}
 
 ## Load Libraries
-```{r, results = "hide"}
+
+```r
 library(maptools) # For reading spatial objects
 library(devtools) # For package installation
 
@@ -72,8 +31,8 @@ library(zonalDaymet)
 ## Enter Common Inputs
 
 Inputs that will be called multiple times are defined as variables.
-```{r }
 
+```r
 # Temporal range
 YEARS <- 2008:2009
 
@@ -88,7 +47,6 @@ DATABASE_PATH <- "C:/CLIMATE/daymet/databases/exampleDatabase"
 TABLE_NAME <- "climateRecord"
 
 ZONE_FIELD <- "FEATUREID"
-
 ```
 
 
@@ -101,13 +59,12 @@ There is also an option to retry failed downloads that become corrupted. This
 is a possibility if the connection is lost during the download. A progress bar 
 will appear during the download as well as messages describing the existence of
 downloaded netCDF files and if any are corrupt.
-```{r, eval = FALSE}
 
+```r
 downloadMosaic(years = YEARS,
                 variables = VARIABLES,
                 destinationFolder = file.path(DAYMET_DIRECTORY),
                 retryFailedDownloads = TRUE)
-
 ```
 
 
@@ -120,17 +77,26 @@ layer, which should already be projected into the same coordinate system
 as the [Daymet Projection](http://daymet.ornl.gov/datasupport.html). The 
 polygon layer is transformed into the geographic coordinate system before
 being split into 2 x 2 degree tiles to save memory in processing.
-```{r, fig.show='hold'}
 
+The spatial references first need to be 
+
+```r
 # Daymet spatial reference CRS definitions (Lambert Conformal Conic).
 proj4.Lambert <- "+proj=lcc +ellps=WGS84 +datum=WGS84 +lat_1=25 +lat_2=60 +lat_0=42.5 +lon_0=-100 +x_0=0 +y_0=0"  # Projected Coordinate System
 proj4.WGS <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"                                    # Geographic Coordinate System
+```
 
+The `maptools` package is used to read in the spatial polygons object.
 
+```r
 # Shapefile of zone polygons
 zonesShapefile <- maptools::readShapePoly("C:/CLIMATE/daymet/spatial/Catchments01_Daymet.shp", 
                                             proj4string = CRS(proj4.Lambert))
+```
 
+
+
+```r
 # Transform the shapefile into the coordinate system so the units are in lat/lon. 
 #   This makes the shapefile comparable to the coordinates provided by Daymet NetCDFs in WGS.
 transformShapefile <- sp::spTransform(zonesShapefile,
@@ -142,9 +108,14 @@ tiledShapefile <- tileShapefile(shapefile = transformShapefile,
                                 tileDegree = 2)
 
 zonesPolygon <- tiledShapefile[[2]]
+```
 
+```r
 plot(zonesPolygon)
+```
 
+```
+## Error in plot(zonesPolygon): error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'zonesPolygon' not found
 ```
 
 
@@ -154,8 +125,8 @@ With the Daymet mosaics downloaded and the spatial objects loaded into R, the zo
 functions can be used to process the climate records. 
 
 
-```{r }
 
+```r
 assignZonalRecordsToDatabase(zonesShapefile = zonesPolygon,
                               zoneField = ZONE_FIELD,
                               zoneFieldType = "integer",
@@ -166,7 +137,8 @@ assignZonalRecordsToDatabase(zonesShapefile = zonesPolygon,
                               databaseTableName = TABLE_NAME)
 ```
 
-```{r }
+
+```r
 zones <- unique(zonesPolygon@data$FEATUREID)[1:2]
 
 exampleZoneDB <- returnZonalRecordsFromDatabase(databaseFilePath = DATABASE_PATH, 
@@ -182,7 +154,8 @@ str(exampleZoneDB)
 
 
 
-```{r}
+
+```r
 exampleZoneDF <- assignZonalRecordsToDataframe(zonesShapefile = zonesPolygon,
                                                 zoneField = "FEATUREID",
                                                 mosaicDirectory = DAYMET_DIRECTORY,
@@ -195,8 +168,8 @@ str(exampleZoneDF)
 
 
 ## Climate Record Processing: Coordinates
-```{r}
 
+```r
 exampleCoordsLong <- returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),
                                               mosaicFile = file.path(DAYMET_DIRECTORY, "prcp_2010.nc4"),
                                               outputFormat = "long",
@@ -211,7 +184,6 @@ exampleCoordsWide <- returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.
                                               endDate = "2010-01-31")
 
 head(exampleCoordsWide)[1:10]
-
 ```
 
 

@@ -15,52 +15,10 @@ Vignettes are long form documentation commonly included in packages. Because the
 - Has a smaller default figure size
 - Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
 
-## Vignette Info
-
-Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
-
 #collapse = TRUE}
 
 ## Load Libraries
-```{r, results = "hide"}
+```{r, results = "hide", warning = FALSE, message = FALSE}
 library(maptools) # For reading spatial objects
 library(devtools) # For package installation
 
@@ -120,41 +78,60 @@ layer, which should already be projected into the same coordinate system
 as the [Daymet Projection](http://daymet.ornl.gov/datasupport.html). The 
 polygon layer is transformed into the geographic coordinate system before
 being split into 2 x 2 degree tiles to save memory in processing.
-```{r, fig.show='hold'}
 
+The spatial projection arguments are 
+```{r, fig.show='hold'}
 # Daymet spatial reference CRS definitions (Lambert Conformal Conic).
 proj4.Lambert <- "+proj=lcc +ellps=WGS84 +datum=WGS84 +lat_1=25 +lat_2=60 +lat_0=42.5 +lon_0=-100 +x_0=0 +y_0=0"  # Projected Coordinate System
 proj4.WGS <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"                                    # Geographic Coordinate System
+```
 
-
-# Shapefile of zone polygons
+The `maptools` package is used to read in the spatial polygons object. The 
+projection argument is defined as the Daymet Projection in the Lambert 
+Conformal Conic system.
+```{r, eval = FALSE}
 zonesShapefile <- maptools::readShapePoly("C:/CLIMATE/daymet/spatial/Catchments01_Daymet.shp", 
-                                            proj4string = CRS(proj4.Lambert))
+                                            proj4string = CRS("+proj=lcc +ellps=WGS84 +datum=WGS84 +lat_1=25 +lat_2=60 +lat_0=42.5 +lon_0=-100 +x_0=0 +y_0=0"))
+```
 
-# Transform the shapefile into the coordinate system so the units are in lat/lon. 
-#   This makes the shapefile comparable to the coordinates provided by Daymet NetCDFs in WGS.
+The spatial object is transformed into the geographic coordinate system
+using the `sp` package. This step ensures that the units are in lat/lon, 
+making the object comparable to the coordinates provided by Daymet NetCDFs
+in the World Geodetic System (WGS_84).
+```{r, eval = FALSE}
 transformShapefile <- sp::spTransform(zonesShapefile,
-                                        CRS(proj4.WGS),
-                                    class = "SpatialPolygonsDataFrame")
-  
-# Break up the spatial object to avoid memory errors during spatial averaging
-tiledShapefile <- tileShapefile(shapefile = transformShapefile,
-                                tileDegree = 2)
+                                        CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"),
+                                        class = "SpatialPolygonsDataFrame")
+``` 
 
+The transformed spatial object is split apart into segments using the
+`tileShapefile` function. This step is helpful with large, complex spatial
+objects when processing the entire object at once will likely exceed memory 
+limitations. Currently, the tile sizes are 1 x 1 and 2 x 2 degrees.
+```{r, eval = FALSE}
+tiledShapefile <- tileShapefile(shapefile = transformShapefile,
+                                tileDegree = 1)
+```
+
+In this example, a single tile will be selected and processed.
+```{r, fig.show='hold'}
 zonesPolygon <- tiledShapefile[[2]]
 
 plot(zonesPolygon)
-
 ```
 
 
 ## Climate Record Processing: Spatial Polygons
 
 With the Daymet mosaics downloaded and the spatial objects loaded into R, the zonalDaymet
-functions can be used to process the climate records. 
+functions can be used to process the climate records. The `assignZonalRecordsToDatabase` 
+function will spatially map the Daymet records to each polygon. If multiple records fall
+inside the polygon, they will be averaged. If no points fall inside the polygon, the nearest
+point will be assigned to the polygon. The function iterates through netCDF files based on
+the specified variables and years to process. Results will be written to a SQLite database.
+If the database does not yet exist, it gets created automatically.
 
-
-```{r }
+```{r, eval = FALSE}
 
 assignZonalRecordsToDatabase(zonesShapefile = zonesPolygon,
                               zoneField = ZONE_FIELD,
@@ -166,7 +143,10 @@ assignZonalRecordsToDatabase(zonesShapefile = zonesPolygon,
                               databaseTableName = TABLE_NAME)
 ```
 
-```{r }
+The `returnZonalRecordsFromDatabase` accesses the database and returns records based
+on specified dates and variables. Two of the polygons are selected as an example of
+how this function works.
+```{r, eval = FALSE}
 zones <- unique(zonesPolygon@data$FEATUREID)[1:2]
 
 exampleZoneDB <- returnZonalRecordsFromDatabase(databaseFilePath = DATABASE_PATH, 
@@ -181,8 +161,12 @@ str(exampleZoneDB)
 ```
 
 
+The `assignZonalRecordsToDataframe` function works the same as `assignZonalRecordsToDatabase`, 
+except that it writes the results to a dataframe in the R workspace. Options to specify the 
+records are the same, which means that care must be taken to ensure that the output will not 
+exceed memory limitations.
 
-```{r}
+```{r, eval = FALSE}
 exampleZoneDF <- assignZonalRecordsToDataframe(zonesShapefile = zonesPolygon,
                                                 zoneField = "FEATUREID",
                                                 mosaicDirectory = DAYMET_DIRECTORY,
@@ -195,21 +179,25 @@ str(exampleZoneDF)
 
 
 ## Climate Record Processing: Coordinates
-```{r}
 
+The `returnRecordsByCoordinates` function takes user defined boundaries and returns
+all of the records that fall within these bounds to a dataframe in the R workspace.
+It is important that the start and end dates of the record match with the netCDF
+mosaic file.
+```{r, eval = FALSE}
 exampleCoordsLong <- returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),
-                                              mosaicFile = file.path(DAYMET_DIRECTORY, "prcp_2010.nc4"),
-                                              outputFormat = "long",
-                                              startDate = "2010-01-01",
-                                              endDate = "2010-01-31")
+                                                  mosaicFile = file.path(DAYMET_DIRECTORY, "prcp_2008.nc4"),
+                                                  outputFormat = "long",
+                                                  startDate = "2008-01-01",
+                                                  endDate = "2008-01-31")
 str(exampleCoordsLong)
 
-exampleCoordsWide <- returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),
-                                              mosaicFile = file.path(DAYMET_DIRECTORY, "prcp_2010.nc4"),
-                                              outputFormat = "wide",
-                                              startDate = "2010-01-01",
-                                              endDate = "2010-01-31")
 
+exampleCoordsWide <- returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),
+                                                  mosaicFile = file.path(DAYMET_DIRECTORY, "prcp_2008.nc4"),
+                                                  outputFormat = "wide",
+                                                  startDate = "2008-01-01",
+                                                  endDate = "2008-01-31")
 head(exampleCoordsWide)[1:10]
 
 ```

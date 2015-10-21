@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="x-ua-compatible" content="IE=9" >
 
-<title>Vignette Info</title>
+<title>Load Libraries</title>
 
 <style type="text/css">
 body, td {
@@ -174,10 +174,6 @@ hljs.initHighlightingOnLoad();
 </script>
 
 
-<!-- MathJax scripts -->
-<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
 
 
 </head>
@@ -191,235 +187,149 @@ hljs.initHighlightingOnLoad();
 <li>Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style</li>
 </ul>
 
-<h2>Vignette Info</h2>
-
-<p>Note the various macros within the <code>vignette</code> setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the <code>title</code> field and the <code>\VignetteIndexEntry</code> to match the title of your vignette.</p>
-
-<h2>Styles</h2>
-
-<p>The <code>html_vignette</code> template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:</p>
-
-<pre><code>output: 
-  rmarkdown::html_vignette:
-    css: mystyles.css
-</code></pre>
-
-<h2>Figures</h2>
-
-<p>The figure sizes have been customised so that you can easily put two images side-by-side. </p>
-
-<pre><code class="r">plot(1:10)
-plot(10:1)
-</code></pre>
-
-<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/> <img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/> </p>
-
-<p>You can enable figure captions by <code>fig_caption: yes</code> in YAML:</p>
-
-<pre><code>output:
-  rmarkdown::html_vignette:
-    fig_caption: yes
-</code></pre>
-
-<p>Then you can use the chunk option <code>fig.cap = &quot;Your figure caption.&quot;</code> in <strong>knitr</strong>.</p>
-
-<h2>More Examples</h2>
-
-<p>You can write math expressions, e.g. \( Y = X\beta + \epsilon \), footnotes<sup>[A</sup> footnote here.], and tables, e.g. using <code>knitr::kable()</code>.</p>
-
-<table><thead>
-<tr>
-<th align="left"></th>
-<th align="right">mpg</th>
-<th align="right">cyl</th>
-<th align="right">disp</th>
-<th align="right">hp</th>
-<th align="right">drat</th>
-<th align="right">wt</th>
-<th align="right">qsec</th>
-<th align="right">vs</th>
-<th align="right">am</th>
-<th align="right">gear</th>
-<th align="right">carb</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">Mazda RX4</td>
-<td align="right">21.0</td>
-<td align="right">6</td>
-<td align="right">160.0</td>
-<td align="right">110</td>
-<td align="right">3.90</td>
-<td align="right">2.620</td>
-<td align="right">16.46</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr>
-<td align="left">Mazda RX4 Wag</td>
-<td align="right">21.0</td>
-<td align="right">6</td>
-<td align="right">160.0</td>
-<td align="right">110</td>
-<td align="right">3.90</td>
-<td align="right">2.875</td>
-<td align="right">17.02</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr>
-<td align="left">Datsun 710</td>
-<td align="right">22.8</td>
-<td align="right">4</td>
-<td align="right">108.0</td>
-<td align="right">93</td>
-<td align="right">3.85</td>
-<td align="right">2.320</td>
-<td align="right">18.61</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">1</td>
-</tr>
-<tr>
-<td align="left">Hornet 4 Drive</td>
-<td align="right">21.4</td>
-<td align="right">6</td>
-<td align="right">258.0</td>
-<td align="right">110</td>
-<td align="right">3.08</td>
-<td align="right">3.215</td>
-<td align="right">19.44</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
-</tr>
-<tr>
-<td align="left">Hornet Sportabout</td>
-<td align="right">18.7</td>
-<td align="right">8</td>
-<td align="right">360.0</td>
-<td align="right">175</td>
-<td align="right">3.15</td>
-<td align="right">3.440</td>
-<td align="right">17.02</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">2</td>
-</tr>
-<tr>
-<td align="left">Valiant</td>
-<td align="right">18.1</td>
-<td align="right">6</td>
-<td align="right">225.0</td>
-<td align="right">105</td>
-<td align="right">2.76</td>
-<td align="right">3.460</td>
-<td align="right">20.22</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
-</tr>
-<tr>
-<td align="left">Duster 360</td>
-<td align="right">14.3</td>
-<td align="right">8</td>
-<td align="right">360.0</td>
-<td align="right">245</td>
-<td align="right">3.21</td>
-<td align="right">3.570</td>
-<td align="right">15.84</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">4</td>
-</tr>
-<tr>
-<td align="left">Merc 240D</td>
-<td align="right">24.4</td>
-<td align="right">4</td>
-<td align="right">146.7</td>
-<td align="right">62</td>
-<td align="right">3.69</td>
-<td align="right">3.190</td>
-<td align="right">20.00</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">2</td>
-</tr>
-<tr>
-<td align="left">Merc 230</td>
-<td align="right">22.8</td>
-<td align="right">4</td>
-<td align="right">140.8</td>
-<td align="right">95</td>
-<td align="right">3.92</td>
-<td align="right">3.150</td>
-<td align="right">22.90</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">2</td>
-</tr>
-<tr>
-<td align="left">Merc 280</td>
-<td align="right">19.2</td>
-<td align="right">6</td>
-<td align="right">167.6</td>
-<td align="right">123</td>
-<td align="right">3.92</td>
-<td align="right">3.440</td>
-<td align="right">18.30</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-</tbody></table>
-
-<p>Also a quote using <code>&gt;</code>:</p>
-
-<blockquote>
-<p>&ldquo;He who gives up [code] safety for [code] speed deserves neither.&rdquo;
-(<a href="https://twitter.com/hadleywickham/status/504368538874703872">via</a>)</p>
-</blockquote>
+<p>#collapse = TRUE}</p>
 
 <h2>Load Libraries</h2>
 
-<pre><code>## Warning: package &#39;maptools&#39; was built under R version 3.1.3
+<pre><code class="r">library(maptools) # For reading spatial objects
+library(devtools) # For package installation
+
+install_github(&quot;Conte-Ecology/zonalDaymet&quot;)
+library(zonalDaymet)
 </code></pre>
 
-<pre><code>## Loading required package: sp
+<h2>Enter Common Inputs</h2>
+
+<p>Inputs that will be called multiple times are defined as variables.</p>
+
+<pre><code class="r"># Temporal range
+YEARS &lt;- 2008:2009
+
+# Variables
+VARIABLES &lt;- c(&quot;tmin&quot;, &quot;prcp&quot;)
+
+# Directory containing all of the raw Daymet data
+DAYMET_DIRECTORY &lt;- &quot;C:/CLIMATE/daymet/raw&quot;
+
+# Name of the database with Daymet data paired to NHDPlus catchments
+DATABASE_PATH &lt;- &quot;C:/CLIMATE/daymet/databases/exampleDatabase&quot;
+TABLE_NAME &lt;- &quot;climateRecord&quot;
+
+ZONE_FIELD &lt;- &quot;FEATUREID&quot;
 </code></pre>
 
-<pre><code>## Warning: package &#39;sp&#39; was built under R version 3.1.3
+<h2>Download Daymet Mosaic Files</h2>
+
+<p>The <code>downloadMosaic</code> function connects to the THREDDS server used by Daymet to
+provide the mosaic netCDF files. Individual files are downloaded by specifying
+the years and variables to download for, as well as the directory to download to.
+There is also an option to retry failed downloads that become corrupted. This
+is a possibility if the connection is lost during the download. A progress bar 
+will appear during the download as well as messages describing the existence of
+downloaded netCDF files and if any are corrupt.</p>
+
+<pre><code class="r">downloadMosaic(years = YEARS,
+                variables = VARIABLES,
+                destinationFolder = file.path(DAYMET_DIRECTORY),
+                retryFailedDownloads = TRUE)
 </code></pre>
 
-<pre><code>## Checking rgeos availability: TRUE
+<h2>Spatial Data Processing</h2>
+
+<p>This example uses hydrologic catchment polygons as the zones over which to 
+spatially average the climate records.
+The <code>maptools</code> and <code>sp</code> packages are used to read and process the spatial<br/>
+layer, which should already be projected into the same coordinate system 
+as the <a href="http://daymet.ornl.gov/datasupport.html">Daymet Projection</a>. The 
+polygon layer is transformed into the geographic coordinate system before
+being split into 2 x 2 degree tiles to save memory in processing.</p>
+
+<p>The spatial references first need to be </p>
+
+<pre><code class="r"># Daymet spatial reference CRS definitions (Lambert Conformal Conic).
+proj4.Lambert &lt;- &quot;+proj=lcc +ellps=WGS84 +datum=WGS84 +lat_1=25 +lat_2=60 +lat_0=42.5 +lon_0=-100 +x_0=0 +y_0=0&quot;  # Projected Coordinate System
+proj4.WGS &lt;- &quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0&quot;                                    # Geographic Coordinate System
 </code></pre>
 
-<pre><code>## Warning: package &#39;devtools&#39; was built under R version 3.1.3
+<p>The <code>maptools</code> package is used to read in the spatial polygons object.</p>
+
+<pre><code class="r"># Shapefile of zone polygons
+zonesShapefile &lt;- maptools::readShapePoly(&quot;C:/CLIMATE/daymet/spatial/Catchments01_Daymet.shp&quot;, 
+                                            proj4string = CRS(proj4.Lambert))
 </code></pre>
 
-<pre><code>## Downloading GitHub repo Conte-Ecology/zonalDaymet@master
-## Installing spatialAverageDaymet
-## Skipping 1 packages not available: ncdf4
-## &quot;C:/PROGRA~1/R/R-31~1.2/bin/x64/R&quot; --no-site-file --no-environ --no-save  \
-##   --no-restore CMD INSTALL  \
-##   &quot;C:/Users/koneil/AppData/Local/Temp/1/Rtmpa6ckUj/devtools1d44174729e/Conte-Ecology-zonalDaymet-6b45632&quot;  \
-##   --library=&quot;C:/Users/koneil/Documents/R/win-library/3.1&quot;  \
-##   --install-tests
+<pre><code class="r"># Transform the shapefile into the coordinate system so the units are in lat/lon. 
+#   This makes the shapefile comparable to the coordinates provided by Daymet NetCDFs in WGS.
+transformShapefile &lt;- sp::spTransform(zonesShapefile,
+                                        CRS(proj4.WGS),
+                                    class = &quot;SpatialPolygonsDataFrame&quot;)
+
+# Break up the spatial object to avoid memory errors during spatial averaging
+tiledShapefile &lt;- tileShapefile(shapefile = transformShapefile,
+                                tileDegree = 2)
+
+zonesPolygon &lt;- tiledShapefile[[2]]
 </code></pre>
 
-<pre><code>## Error in library(zonalDaymet): there is no package called &#39;zonalDaymet&#39;
+<pre><code class="r">plot(zonesPolygon)
+</code></pre>
+
+<pre><code>## Error in plot(zonesPolygon): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: Error: object &#39;zonesPolygon&#39; not found
+</code></pre>
+
+<h2>Climate Record Processing: Spatial Polygons</h2>
+
+<p>With the Daymet mosaics downloaded and the spatial objects loaded into R, the zonalDaymet
+functions can be used to process the climate records. </p>
+
+<pre><code class="r">assignZonalRecordsToDatabase(zonesShapefile = zonesPolygon,
+                              zoneField = ZONE_FIELD,
+                              zoneFieldType = &quot;integer&quot;,
+                              mosaicDirectory = DAYMET_DIRECTORY,
+                              variables = VARIABLES, 
+                              years = YEARS,
+                              databaseFilePath = DATABASE_PATH, 
+                              databaseTableName = TABLE_NAME)
+</code></pre>
+
+<pre><code class="r">zones &lt;- unique(zonesPolygon@data$FEATUREID)[1:2]
+
+exampleZoneDB &lt;- returnZonalRecordsFromDatabase(databaseFilePath = DATABASE_PATH, 
+                                                databaseTableName = TABLE_NAME,
+                                                zoneField = ZONE_FIELD,
+                                                startDate = &quot;2008-10-01&quot;,
+                                                endDate = &quot;2008-12-31&quot;,
+                                                zoneIDs = zones,
+                                                variables = VARIABLES)
+
+str(exampleZoneDB)
+</code></pre>
+
+<pre><code class="r">exampleZoneDF &lt;- assignZonalRecordsToDataframe(zonesShapefile = zonesPolygon,
+                                                zoneField = &quot;FEATUREID&quot;,
+                                                mosaicDirectory = DAYMET_DIRECTORY,
+                                                variables = c(&quot;tmin&quot;, &quot;prcp&quot;), 
+                                                years = 2008:2009)
+
+str(exampleZoneDF)
+</code></pre>
+
+<h2>Climate Record Processing: Coordinates</h2>
+
+<pre><code class="r">exampleCoordsLong &lt;- returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),
+                                              mosaicFile = file.path(DAYMET_DIRECTORY, &quot;prcp_2010.nc4&quot;),
+                                              outputFormat = &quot;long&quot;,
+                                              startDate = &quot;2010-01-01&quot;,
+                                              endDate = &quot;2010-01-31&quot;)
+str(exampleCoordsLong)
+
+exampleCoordsWide &lt;- returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),
+                                              mosaicFile = file.path(DAYMET_DIRECTORY, &quot;prcp_2010.nc4&quot;),
+                                              outputFormat = &quot;wide&quot;,
+                                              startDate = &quot;2010-01-01&quot;,
+                                              endDate = &quot;2010-01-31&quot;)
+
+head(exampleCoordsWide)[1:10]
 </code></pre>
 
 </body>

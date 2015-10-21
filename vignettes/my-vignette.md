@@ -73,45 +73,84 @@ Also a quote using `>`:
 
 
 ## Load Libraries
+#```{r, results = "hide"}
 
 
-```
+```r
+library(maptools) # For reading spatial objects
 ## Warning: package 'maptools' was built under R version 3.1.3
-```
-
-```
 ## Loading required package: sp
-```
-
-```
 ## Warning: package 'sp' was built under R version 3.1.3
-```
-
-```
 ## Checking rgeos availability: TRUE
-```
-
-```
+library(devtools) # For package installation
 ## Warning: package 'devtools' was built under R version 3.1.3
-```
 
-```
+install_github("Conte-Ecology/zonalDaymet")
 ## Downloading GitHub repo Conte-Ecology/zonalDaymet@master
-## Installing spatialAverageDaymet
+## Installing zonalDaymet
 ## Skipping 1 packages not available: ncdf4
 ## "C:/PROGRA~1/R/R-31~1.2/bin/x64/R" --no-site-file --no-environ --no-save  \
 ##   --no-restore CMD INSTALL  \
-##   "C:/Users/koneil/AppData/Local/Temp/1/Rtmpa6ckUj/devtools1d44174729e/Conte-Ecology-zonalDaymet-6b45632"  \
+##   "C:/Users/koneil/AppData/Local/Temp/1/RtmpMB6p5k/devtools1cb0786a3d11/Conte-Ecology-zonalDaymet-edce79f"  \
 ##   --library="C:/Users/koneil/Documents/R/win-library/3.1"  \
 ##   --install-tests
+library(zonalDaymet)
+## Loading required package: dplyr
+## Warning: package 'dplyr' was built under R version 3.1.3
+## 
+## Attaching package: 'dplyr'
+## 
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+
+## Enter Inputs
+
+```r
+# Temporal range
+YEARS <- 1980:2014
+
+# Variables
+VARIABLES <- c("tmax", "tmin", "prcp", "dayl", "srad", "vp", "swe")
+
+# Directory containing all of the raw Daymet data
+DAYMET_DIRECTORY <- "C:/CLIMATE/daymet/raw"
+
+# Name of the database with Daymet data paired to NHDPlus catchments
+DATABASE_PATH <- "C:/CLIMATE/daymet/databases/"
+TABLE_NAME <- "climateRecord"
+
+ZONE_FIELD <- "FEATUREID"
+
+
+
+# Define the projections of the shapefiles and Daymet data (Lambert Conformal Conic). This gets transformed to the coordinate system for processing.
+proj4.Lambert <- "+proj=lcc +ellps=WGS84 +datum=WGS84 +lat_1=25 +lat_2=60 +lat_0=42.5 +lon_0=-100 +x_0=0 +y_0=0"  # Projected Coordinate System
+proj4.WGS <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"                                    # Geographic Coordinate System
+
+
+# Do not change:
+allYears <- seq(from = START_YEAR, to = END_YEAR, by = 1)
 ```
 
 ```
-## Error in library(zonalDaymet): there is no package called 'zonalDaymet'
+## Error in seq(from = START_YEAR, to = END_YEAR, by = 1): object 'START_YEAR' not found
 ```
 
 
+---
+## Download the Daymet Mosaics
 
-
-
+```r
+downloadMosaic(years = YEARS,
+                variables = VARIABLES,
+                destinationFolder = file.path(DAYMET_DIRECTORY),
+                retryFailedDownloads = TRUE)
+```
 

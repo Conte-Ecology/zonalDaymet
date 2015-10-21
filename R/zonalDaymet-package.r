@@ -1,10 +1,10 @@
-#' spatialAverageDaymet
+#' zonalDaymet
 #'
-#' @name spatialAverageDaymet
+#' @name zonalDaymet
 #' @docType package
 #' 
 #' @description
-#' spatialAverageDaymet provides tools to establish a relationship between Daymet 
+#' zonalDaymet provides tools to establish a relationship between Daymet 
 #' climate records and user-defined spatial polygons within the R environment.
 #'
 #' @details
@@ -12,7 +12,7 @@
 #' netCDF files. Each point location in the grid, specified by latitude/longitude 
 #' coordinates, has one time series associated with each climate variable. Each 
 #' netCDF file contains 1 variable record over 1 year for the entire North American 
-#' range. The spatialAverageDaymet package provides tools to accomplish the following:
+#' range. The zonalDaymet package provides tools to accomplish the following:
 #' \itemize{
 #' \item Download netCDF climate mosaics from the Daymet THREDDS Server
 #' \item Iterate through netCDF files combining time series records and variables 
