@@ -69,8 +69,9 @@ tileShapefile <- function(shapefile, tileDegree){
         shapefileTiles[[tileNum]] <- shapefile[rows,]
       }
         
-      # Status update
-      print(paste0("Tiling shapefile: ", j +(XL*(i-1)), " of ", XL*YL, " iterations complete."))
+      ## Status update
+      #print(paste0("Tiling shapefile: ", j +(XL*(i-1)), " of ", XL*YL, " iterations complete."))
+      
     }# end lon loop
   }# end lat loop
 
