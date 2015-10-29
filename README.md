@@ -39,7 +39,7 @@ to the polygon. A function is also provided to simplify record selection from th
 database. 
 
 ## Sample Workflow
-The [Sample-Workflow Vignette](https://github.com/Conte-Ecology/zonalDaymet/blob/master/vignettes/Sample-Workflow.md) provides a walk-through of the package functions and how they
+The [Sample-Workflow Vignette](https://github.com/Conte-Ecology/zonalDaymet/blob/master/vignettes/Sample Workflow.md) provides a walk-through of the package functions and how they
 can be used together to process the Daymet netCDF mosaic files into a more
 useful format in R.
 
