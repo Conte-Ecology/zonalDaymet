@@ -10,7 +10,10 @@ vignette: >
 ---
 # Sample Workflow for the zonalDaymet Package
 This Vignette serves as an example workflow of the `zonalDaymet` package functions.
-Hydrologic catchment polygons are used as the zones over which to spatially average the climate records. 
+The example includes precipitation and minimum temperature records over 2008 and 
+2009 in southeastern Massachusetts. Hydrologic catchment polygons are used as the 
+zones over which to spatially average the climate records.
+
 Functions not in this package are preceded by their package source and a "::". Functions
 in the `zonalDaymet` package are referred to directly. 
 
@@ -78,7 +81,7 @@ tiledShapefile <- tileShapefile(shapefile = transformShapefile,
                                 tileDegree = 1)
 ```
 
-In this example, a single tile of catchments over Cape Cod will be selected and processed.
+A single tile of catchments is selected for processing.
 ```{r, fig.show='hold'}
 zonesPolygon <- tiledShapefile[[5]]
 
@@ -109,8 +112,9 @@ assignZonalRecordsToDatabase(zonesShapefile = zonesPolygon,
 ```
 
 The `returnZonalRecordsFromDatabase` accesses a database and returns records based
-on specified dates and variables. Two of the polygons are selected as an example of
-how this function works.
+on specified dates and variables. If the user is intersted in the first snowfall of
+the season, one method may be to inspect the minimum temperature and precipitation 
+records. Two of the polygons are selected to keep the output size relatively small.
 ```{r }
 zones <- unique(zonesPolygon@data$FEATUREID)[1:2]
 
