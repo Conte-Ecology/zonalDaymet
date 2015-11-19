@@ -1,7 +1,7 @@
 #' @title Return climate records from SQLite database.
 #'
 #' @description 
-#' \code{returnZonalRecordsFromDatabase} Returns the climate records for specified zones as a dataframe from a SQLite database.
+#' The \code{returnZonalRecordsFromDatabase} function returns the climate records for specified zones as a dataframe from a SQLite database.
 #'
 #' @param databaseFilePath Character string of the file path to the SQLite database to access.
 #' @param databaseTableName Character string of the name of the table to access in the database.

@@ -11,14 +11,7 @@
 #' @param mosaicDirectory Character string of the file path to the folder containing the netCDF mosaic files.
 #' @param variables Vector of character strings indicating the variables to process.
 #' @param years Vector of numeric values indicating the years to process.
-#'
-#' @examples
-#' assignZonalRecordsToDataframe(zonesShapefile  = spatialPolygonsDataFrame,
-#'                               zoneField       = "UNIQUE_ID",
-#'                               mosaicDirectory = "C:/USER/Data/Daymet",
-#'                               variables       = c("tmin", "tmax", "prcp"),
-#'                               years           = 1980:1990)
-#'
+#' 
 #' @details
 #' The netCDF files are read and spatially indexed using custom internal functions. The climate time series 
 #' area assigned to the zones represented by the "zonesShapefile" object. If only one record falls into a polygon
@@ -29,7 +22,14 @@
 #' The function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
 #'
 #' If the original shapefile is large enough to cause memory problems, the function can be iterated over the 
-#' results of the \code{tileShapefile} function which splits the spatial polygon into manageable chunks. 
+#' results of the \code{tileShapefile} function which splits the spatial polygon into manageable chunks.
+#' 
+#' @examples
+#' assignZonalRecordsToDataframe(zonesShapefile  = spatialPolygonsDataFrame,
+#'                               zoneField       = "UNIQUE_ID",
+#'                               mosaicDirectory = "C:/USER/Data/Daymet",
+#'                               variables       = c("tmin", "tmax", "prcp"),
+#'                               years           = 1980:1990)
 #'
 #' @export 
 assignZonalRecordsToDataframe <- function(zonesShapefile, zoneField, mosaicDirectory, variables, years){
