@@ -3,7 +3,6 @@
 #' @description 
 #' The \code{assignZonalRecordsToDatabase} function spatially averages climate records from the 
 #' netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database. 
-
 #'
 #' @param zonesShapefile A SpatialPolygonsDataFrame of the zones which will be assigned climate records. 
 #' The object should have a unique ID column and be in the WGS geographic coordinate system (same as the 
