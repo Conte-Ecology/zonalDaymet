@@ -23,11 +23,11 @@ returnZonalRecordsFromDatabase(databaseFilePath, databaseTableName, zoneField,
 \item{variables}{Vector of character strings indicating the variables to return}
 }
 \description{
-\code{returnZonalRecordsFromDatabase} Returns the climate records for specified zones as a dataframe from a SQLite database.
+The \code{returnZonalRecordsFromDatabase} function returns the climate records for specified zones as a dataframe from a SQLite database.
 }
 \details{
 The function provides an option consistent with the package for returning values from the SQLite database.
-The dplyr package or SQL code can also be used to access climate records from this database in R.
+The "dplyr" package or SQL code can also be used to access climate records from this database in R.
 }
 \examples{
 returnZonalRecordsFromDatabase(databaseFilePath  = "C:/USER/Data/Databases/DaymetDB",
