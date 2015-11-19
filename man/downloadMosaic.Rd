@@ -17,9 +17,11 @@ downloadMosaic(years, variables, destinationDirectory,
 \item{retryFailedDownloads}{logical; If TRUE the function will check (by opening) to see if the netCDF files are corrupt.}
 }
 \description{
-The \code{downloadMosaic} function downloads mosaic NetCDF files from the Daymet THREDDS server
-for the variables and years specified. Currently, the web address is hard-coded into the function.
-If and when this address is updated, a change will need to be made to the function code.
+The \code{downloadMosaic} function downloads mosaic NetCDF files from the Daymet THREDDS server.
+}
+\details{
+The function will download all files for the variables and years specified. The THREDDS server URL is
+hard-coded into the function and will need to be updated whenever the URL changes.
 }
 \examples{
 downloadMosaic(years                = 1980:1990,

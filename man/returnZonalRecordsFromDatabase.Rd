@@ -25,13 +25,17 @@ returnZonalRecordsFromDatabase(databaseFilePath, databaseTableName, zoneField,
 \description{
 \code{returnZonalRecordsFromDatabase} Returns the climate records for specified zones as a dataframe from a SQLite database.
 }
+\details{
+The function provides an option consistent with the package for returning values from the SQLite database. The
+\code{dplyr} package or SQL code can also be used to access climate records from this database in R.
+}
 \examples{
-returnZonalRecordsFromDatabase("C:/USER/Data/Databases/DaymetDB",
-                                "climate_record",
-                                "UNIQUE_ID",
-                                "1980-01-01",
-                                "1980-12-31",
-                                c(1, 2, 3, 4, 5),
-                                c("tmin", "tmax", "prcp"))
+returnZonalRecordsFromDatabase(databaseFilePath  = "C:/USER/Data/Databases/DaymetDB",
+                               databaseTableName = "climate_record",
+                               zoneField         = "UNIQUE_ID",
+                               startDate         = "1980-01-01",
+                               endDate           = "1980-12-31",
+                               zoneIDs           = c(1, 2, 3, 4, 5),
+                               variables         = c("tmin", "tmax", "prcp"))
 }
 

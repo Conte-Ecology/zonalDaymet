@@ -18,7 +18,8 @@ and SpatialPolygonsDataFrame provided. This is the direct output from the intern
 the zones.}
 }
 \description{
-\code{spatialAverageSingleFile} is an internal function that returns the spatial average climte
-records that fall inside the zones specified in the "spatialIndeces" input object.
+\code{spatialAverageSingleFile} is an internal function that returns the spatial average of climate
+records that fall inside the zones specified in the "spatialIndeces" input object (created by the
+\code{determineSpatialRelationships} function.
 }
 

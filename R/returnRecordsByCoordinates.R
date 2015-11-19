@@ -4,9 +4,8 @@
 #' The \code{returnRecordsByCoordinates} function returns the climate records for a section of the 
 #' mosaic file specified by coordinate bounds. 
 #'
-#' @param areaExtent Vector string of numeric values specifying the bounding latitude and longitude 
-#' coordinates of the boundary box. All points within these bounds will be retrieved. The format is: 
-#' c(Minimum Longitude, Maximum Longitude, Minimum Latitude, Maximum Latitude).
+#' @param areaExtent Vector string of numeric values specifying lat/lon coordinates of the bounding 
+#' box. The format is: c(Minimum Longitude, Maximum Longitude, Minimum Latitude, Maximum Latitude).
 #' @param mosaicFile Character string of the file path to the netCDF mosiac file to access.
 #' @param outputFormat A character string of the format of the dataframe output. Options are "wide" 
 #' or "long" defaulting to "long".
@@ -16,11 +15,15 @@
 #' mosaic file. The format is: "yyyy-mm-dd"
 #'
 #' @examples
-#' returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),
-#'                            mosaicFile = "C:/USER/Data/Daymet/prcp_2010.nc4",
+#' returnRecordsByCoordinates(areaExtent   = c(-71.0, -70.0, 42.0, 43.0),
+#'                            mosaicFile   = "C:/USER/Data/Daymet/prcp_2010.nc4",
 #'                            outputFormat = "long",
-#'                            startDate = "2010-01-01",
-#'                            endDate = "2010-01-31")
+#'                            startDate    = "2010-01-01",
+#'                            endDate      = "2010-01-31")
+#'                            
+#' @details 
+#' Climate records for all points within the bounding box will be retrieved and identified by their
+#' source latitude and longitude coordinates.
 #'
 #' @export
 returnRecordsByCoordinates <- function(areaExtent, mosaicFile, outputFormat = "long", startDate, endDate){

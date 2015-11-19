@@ -1,9 +1,7 @@
 #' @title Download netCDF mosaic files.
 #'
 #' @description
-#' The \code{downloadMosaic} function downloads mosaic NetCDF files from the Daymet THREDDS server 
-#' for the variables and years specified. Currently, the web address is hard-coded into the function.
-#' If and when this address is updated, a change will need to be made to the function code.
+#' The \code{downloadMosaic} function downloads mosaic NetCDF files from the Daymet THREDDS server. 
 #'
 #' @param years A numeric vector specifying the years to download
 #' @param variables A character vector specifying the variables to download
@@ -15,6 +13,10 @@
 #'                variables            = c("tmin", "tmax", "prcp"), 
 #'                destinationDirectory = "C:/USER/Data/Daymet", 
 #'                retryFailedDownloads = TRUE)
+#' 
+#' @details
+#' The function will download all files for the variables and years specified. The THREDDS server URL is 
+#' hard-coded into the function and will need to be updated whenever the URL changes.
 #' 
 #' @export 
 downloadMosaic <- function(years, variables, destinationDirectory, retryFailedDownloads = TRUE){

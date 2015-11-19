@@ -23,9 +23,18 @@ Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_
 \description{
 The \code{assignZonalRecordsToDataframe} function patially averages climate records from the
 netCDF mosaic files over zones defined by spatial polygons and returns a dataframe.
-If the shapefile is large enough to cause memory problems, the function can be iterated over the
-results of the \code{tileShapefile} function which splits the spatial polygon into manageable chunks. The
-function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
+}
+\details{
+The netCDF files are read and spatially indexed using custom internal functions. The climate time series
+area assigned to the zones represented by the "zonesShapefile" object. If only one record falls into a polygon
+it is assigned. If multuple records fall into a single polygon, they are averaged. If no records
+fall into a polygon, the record nearest to the polygon centroid is assigned. The ouput is written to a
+dataframe in long format with columns for the "zoneField", date, and each of the climate variables.
+
+The function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
+
+If the original shapefile is large enough to cause memory problems, the function can be iterated over the
+results of the \code{tileShapefile} function which splits the spatial polygon into manageable chunks.
 }
 \examples{
 assignZonalRecordsToDataframe(zonesShapefile  = spatialPolygonsDataFrame,

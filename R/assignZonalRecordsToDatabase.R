@@ -3,9 +3,7 @@
 #' @description 
 #' The \code{assignZonalRecordsToDatabase} function spatially averages climate records from the 
 #' netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database. 
-#' If the shapefile is large enough to cause memory problems, the function can be iterated over the 
-#' results of the \code{tileShapefile} function which splits the spatial polygon into manageable chunks. The 
-#' function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
+
 #'
 #' @param zonesShapefile A SpatialPolygonsDataFrame of the zones which will be assigned climate records. 
 #' The object should have a unique ID column and be in the WGS geographic coordinate system (same as the 
@@ -20,6 +18,18 @@
 #' @param databaseFilePath Character string of the file path to the database to write to. If it does not 
 #' exist, one will be created.
 #' @param databaseTableName Character string of the name of the table to create/write to in the database.
+#' 
+#' @details
+#' The netCDF files are read and spatially indexed using custom internal functions. The climate time series 
+#' area assigned to the zones represented by the "zonesShapefile" object. If only one record falls into a polygon
+#' it is assigned. If multuple records fall into a single polygon, they are averaged. If no records
+#' fall into a polygon, the record nearest to the polygon centroid is assigned. The ouput is written to a SQLite
+#' database in long format with columns for the "zoneField", date, and each of the climate variables.
+#' 
+#' The function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
+#' 
+#' If the original shapefile is large enough to cause memory problems, the function can be iterated over the 
+#' results of the \code{tileShapefile} function which splits the spatial polygon into manageable chunks. 
 #' 
 #' @examples
 #' assignZonalRecordsToDatabase(zonesShapefile    = spatialPolygonsDataFrame, 

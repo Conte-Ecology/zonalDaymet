@@ -3,9 +3,6 @@
 #' @description 
 #' The \code{assignZonalRecordsToDataframe} function patially averages climate records from the 
 #' netCDF mosaic files over zones defined by spatial polygons and returns a dataframe. 
-#' If the shapefile is large enough to cause memory problems, the function can be iterated over the 
-#' results of the \code{tileShapefile} function which splits the spatial polygon into manageable chunks. The 
-#' function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
 #'
 #' @param zonesShapefile A SpatialPolygonsDataFrame of the zones which will be assigned climate records. 
 #' The object should have a unique ID column and be in the WGS geographic coordinate system (same as the 
@@ -14,14 +11,26 @@
 #' @param mosaicDirectory Character string of the file path to the folder containing the netCDF mosaic files.
 #' @param variables Vector of character strings indicating the variables to process.
 #' @param years Vector of numeric values indicating the years to process.
-#' 
+#'
 #' @examples
-#' assignZonalRecordsToDataframe(zonesShapefile  = spatialPolygonsDataFrame, 
+#' assignZonalRecordsToDataframe(zonesShapefile  = spatialPolygonsDataFrame,
 #'                               zoneField       = "UNIQUE_ID",
 #'                               mosaicDirectory = "C:/USER/Data/Daymet",
 #'                               variables       = c("tmin", "tmax", "prcp"),
 #'                               years           = 1980:1990)
-#'                                        
+#'
+#' @details
+#' The netCDF files are read and spatially indexed using custom internal functions. The climate time series 
+#' area assigned to the zones represented by the "zonesShapefile" object. If only one record falls into a polygon
+#' it is assigned. If multuple records fall into a single polygon, they are averaged. If no records
+#' fall into a polygon, the record nearest to the polygon centroid is assigned. The ouput is written to a 
+#' dataframe in long format with columns for the "zoneField", date, and each of the climate variables.
+#'
+#' The function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
+#'
+#' If the original shapefile is large enough to cause memory problems, the function can be iterated over the 
+#' results of the \code{tileShapefile} function which splits the spatial polygon into manageable chunks. 
+#'
 #' @export 
 assignZonalRecordsToDataframe <- function(zonesShapefile, zoneField, mosaicDirectory, variables, years){
 

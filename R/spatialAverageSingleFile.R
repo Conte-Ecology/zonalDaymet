@@ -1,8 +1,9 @@
 #' @title Spatially average multiple climate records by zone
 #'
 #' @description 
-#' \code{spatialAverageSingleFile} is an internal function that returns the spatial average climte 
-#' records that fall inside the zones specified in the "spatialIndeces" input object.
+#' \code{spatialAverageSingleFile} is an internal function that returns the spatial average of climate 
+#' records that fall inside the zones specified in the "spatialIndeces" input object (created by the
+#' \code{determineSpatialRelationships} function.
 #' 
 #' @param mosaicFilePath Character string of the file path to the netCDF mosaic file containing the 
 #' climate records.
