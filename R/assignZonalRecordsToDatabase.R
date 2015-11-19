@@ -1,21 +1,24 @@
 #' @title Assign climate record to zones
 #'
 #' @description 
-#'  The \code{assignZonalRecordsToDatabase} function spatially averages climate records from the 
-#'  netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database. 
-#'  If the shapefile is large enough to cause memory problems, the function can be iterated over the 
-#'  results of the {tileShapefile} function which splits the spatial polygon into manageable chunks. The 
-#'  function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
+#' The \code{assignZonalRecordsToDatabase} function spatially averages climate records from the 
+#' netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database. 
+#' If the shapefile is large enough to cause memory problems, the function can be iterated over the 
+#' results of the {tileShapefile} function which splits the spatial polygon into manageable chunks. The 
+#' function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
 #'
 #' @param zonesShapefile A SpatialPolygonsDataFrame of the zones which will be assigned climate records. 
 #' The object should have a unique ID column and be in the WGS geographic coordinate system (same as the 
 #' Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0").
 #' @param zoneField Character string of the field name describing the unique ID values that define the zones.
-#' @param zoneFieldType Character string defining the column type for the unique ID field written into the database. Options are "character", "integer", "numeric", or the default: NULL. A NULL value will base the type on the shapefile field type as interpreted by R.
+#' @param zoneFieldType Character string defining the column type for the unique ID field written into the 
+#' database. Options are "character", "integer", "numeric", or the default: NULL. A NULL value will base the 
+#' type on the shapefile field type as interpreted by R.
 #' @param mosaicDirectory Character string of the file path to the folder containing the netCDF mosaic files.
 #' @param variables Vector of character strings indicating the variables to process.
 #' @param years Vector of numeric values indicating the years to process.
-#' @param databaseFilePath Character string of the file path to the database to write to. If it does not exist, one will be created.
+#' @param databaseFilePath Character string of the file path to the database to write to. If it does not 
+#' exist, one will be created.
 #' @param databaseTableName Character string of the name of the table to create/write to in the database.
 #' 
 #' @examples
@@ -29,7 +32,8 @@
 #'                              databaseTableName = "climate_record")
 #' 
 #' @export 
-assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldType = NULL, mosaicDirectory, variables, years, databaseFilePath = NULL, databaseTableName = NULL){
+assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldType = NULL, mosaicDirectory, 
+                                         variables, years, databaseFilePath = NULL, databaseTableName = NULL){
     
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop("The RSQLite is required for this function to work. Please install it.",
@@ -39,7 +43,8 @@ assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldTyp
   
   # Create and/or connect to the database
   # -------------------------------------
-  # If the database does not exist then create it, otherwise establish connection with existing database for uploading.
+  # If the database does not exist then create it, otherwise establish connection with existing database 
+  #   for uploading.
   if (!file.exists(databaseFilePath)) { 
     src_sqlite(databaseFilePath, create = T) 
   } else {
@@ -54,8 +59,11 @@ assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldTyp
   # Subsets the Daymet mosaic netcdf file based on the provided shapefile
   spatialIndeces <- determineSpatialRelationships(zonesShapefile    = zonesShapefile,
                                                   zoneField         = zoneField,
-                                                  exampleMosaicFile = file.path(mosaicDirectory, paste0(variables[1], '_', years[1], '.nc4') ) )
-
+                                                  exampleMosaicFile = file.path(mosaicDirectory, 
+                                                                                paste0(variables[1], 
+                                                                                       '_', 
+                                                                                       years[1], 
+                                                                                       '.nc4') ) )
   
   # Process NetCDF data
   # -------------------

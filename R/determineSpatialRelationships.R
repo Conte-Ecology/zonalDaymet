@@ -1,17 +1,24 @@
 #' @title Determine spatial relationships between climate records and zones
 #' 
 #' @description 
-#' \code{determineSpatialRelationships} is an internal function that defines the spatial relationships between the netCDF files and the zones SpatialPolygonsDataFrame.
+#' \code{determineSpatialRelationships} is an internal function that defines the spatial relationships 
+#' between the netCDF files and the zones SpatialPolygonsDataFrame.
 #'
-#' @param zonesShapefile SpatialPolygonsDataFrame A SpatialPolygonsDataFrame of the zones which will be assigned climate records. The object should have a unique ID column and be in the WGS geographic coordinate system (same as the Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0").
-#' @param zoneField Character string of the field name describing the unique ID values that define the zones.
-#' @param exampleMosaicFile Character string of the file path to the netCDF mosaic file used to define the spatial relationships between the shapefile and the climate record cells.
+#' @param zonesShapefile SpatialPolygonsDataFrame A SpatialPolygonsDataFrame of the zones which will be 
+#' assigned climate records. The object should have a unique ID column and be in the WGS geographic 
+#' coordinate system (same as the Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 
+#' +datum=WGS84 +no_defs +towgs84=0,0,0").
+#' @param zoneField Character string of the field name describing the unique ID values that define the 
+#' zones.
+#' @param exampleMosaicFile Character string of the file path to the netCDF mosaic file used to define 
+#' the spatial relationships between the shapefile and the climate record cells.
 
 determineSpatialRelationships <- function(zonesShapefile, zoneField, exampleMosaicFile){
   
   # Check spatial reference
   if(sp::proj4string(zonesShapefile) != "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"){
-    stop("Error in 'determineSpatialRelationships' function: The spatial relationship between the shapefile and Daymet grid cannot be determined. The shapefile must be in WGS.")
+    stop("Error in 'determineSpatialRelationships' function: The spatial relationship between the shapefile 
+         and Daymet grid cannot be determined. The shapefile must be in WGS.")
   } else{
   
     # Status update
@@ -96,8 +103,10 @@ determineSpatialRelationships <- function(zonesShapefile, zoneField, exampleMosa
     # Assigning Records
     # =================
     # Daymet points get assigned to polygons using 2 methods:
-    # 1. A spatial join is used to determine all points fall inside of each polygon. These will eventually get spatially averaged
-    # 2. Polygons that are too small to overlap any points get assigned the point that is nearest to their centroid
+    # 1. A spatial join is used to determine all points fall inside of each polygon. These will 
+    #     eventually get spatially averaged
+    # 2. Polygons that are too small to overlap any points get assigned the point that is nearest 
+    #     to their centroid
     
     
     # Spatial Join
@@ -169,13 +178,14 @@ determineSpatialRelationships <- function(zonesShapefile, zoneField, exampleMosa
     for (m in 1:nrow(finalPoints)) {
 
       # Find th position in the array of the variable by matching assigned Daymet coordinates
-      position <- which(shapeLon == finalPoints$Longitude[m] & shapeLat == finalPoints$Latitude[m], arr.in = TRUE)
+      position <- which(shapeLon == finalPoints$Longitude[m] & shapeLat == finalPoints$Latitude[m], 
+                        arr.in = TRUE)
         
       finalPoints$subRow[m] <- as.numeric(position[,1])
       finalPoints$subCol[m] <- as.numeric(position[,2])
     }
       
-    # Output the polygon ID, the assigned Daymet coordinates, and their position in the subset array of Daymet points
+    # Output the polygon ID, the assigned Daymet coordinates, and their position in the subset array
     shapefileIndeces <- finalPoints
   
     output <- list(mosaicIndeces, shapefileIndeces)

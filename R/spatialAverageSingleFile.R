@@ -1,11 +1,16 @@
 #' @title Spatially average multiple climate records by zone
 #'
 #' @description 
-#' \code{spatialAverageSingleFile} is an internal function that returns the spatial average climte records that fall inside the zones specified in the "spatialIndeces" input object.
+#' \code{spatialAverageSingleFile} is an internal function that returns the spatial average climte 
+#' records that fall inside the zones specified in the "spatialIndeces" input object.
 #' 
-#' @param mosaicFilePath Character string of the file path to the netCDF mosaic file containing the climate records.
-#' @param spatialIndeces List of 2 dataframes describing the spatial relationships between netCDFs and SpatialPolygonsDataFrame provided. This is the direct output from the internal \code{determineSpatialRelationships} function.
-#' @param zoneField Character string of the field name describing the unique ID values that define the zones.
+#' @param mosaicFilePath Character string of the file path to the netCDF mosaic file containing the 
+#' climate records.
+#' @param spatialIndeces List of 2 dataframes describing the spatial relationships between netCDFs 
+#' and SpatialPolygonsDataFrame provided. This is the direct output from the internal 
+#' \code{determineSpatialRelationships} function.
+#' @param zoneField Character string of the field name describing the unique ID values that define 
+#' the zones.
 
 spatialAverageSingleFile <- function(mosaicFilePath, spatialIndeces, zoneField){
   

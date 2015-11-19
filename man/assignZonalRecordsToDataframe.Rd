@@ -21,11 +21,11 @@ Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_
 \item{years}{Vector of numeric values indicating the years to process.}
 }
 \description{
-\code The {assignZonalRecordsToDataframe} function patially averages climate records from the
+The \code{assignZonalRecordsToDataframe} function patially averages climate records from the
 netCDF mosaic files over zones defined by spatial polygons and returns a dataframe.
 If the shapefile is large enough to cause memory problems, the function can be iterated over the
 results of the {tileShapefile} function which splits the spatial polygon into manageable chunks. The
- function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
+function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
 }
 \examples{
 assignZonalRecordsToDataframe(zonesShapefile  = spatialPolygonsDataFrame,

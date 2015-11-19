@@ -15,7 +15,9 @@ Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_
 
 \item{zoneField}{Character string of the field name describing the unique ID values that define the zones.}
 
-\item{zoneFieldType}{Character string defining the column type for the unique ID field written into the database. Options are "character", "integer", "numeric", or the default: NULL. A NULL value will base the type on the shapefile field type as interpreted by R.}
+\item{zoneFieldType}{Character string defining the column type for the unique ID field written into the
+database. Options are "character", "integer", "numeric", or the default: NULL. A NULL value will base the
+type on the shapefile field type as interpreted by R.}
 
 \item{mosaicDirectory}{Character string of the file path to the folder containing the netCDF mosaic files.}
 
@@ -23,16 +25,17 @@ Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_
 
 \item{years}{Vector of numeric values indicating the years to process.}
 
-\item{databaseFilePath}{Character string of the file path to the database to write to. If it does not exist, one will be created.}
+\item{databaseFilePath}{Character string of the file path to the database to write to. If it does not
+exist, one will be created.}
 
 \item{databaseTableName}{Character string of the name of the table to create/write to in the database.}
 }
 \description{
-\code The {assignZonalRecordsToDatabase} function spatially averages climate records from the
- netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database.
- If the shapefile is large enough to cause memory problems, the function can be iterated over the
- results of the {tileShapefile} function which splits the spatial polygon into manageable chunks. The
- function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
+The \code{assignZonalRecordsToDatabase} function spatially averages climate records from the
+netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database.
+If the shapefile is large enough to cause memory problems, the function can be iterated over the
+results of the {tileShapefile} function which splits the spatial polygon into manageable chunks. The
+function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
 }
 \examples{
 assignZonalRecordsToDatabase(zonesShapefile    = spatialPolygonsDataFrame,

@@ -51,7 +51,8 @@ downloadMosaic <- function(years, variables, destinationDirectory, retryFailedDo
         beg <- proc.time()[3]
         
         # Download the file from the THREDDS server
-        download.file(url      = paste0('https://daymet.ornl.gov/thredds/fileServer/ornldaac/1219/', year, '/', var, '_', year, '.nc4'), 
+        download.file(url      = paste0('https://daymet.ornl.gov/thredds/fileServer/ornldaac/1219/', 
+                                        year, '/', var, '_', year, '.nc4'), 
                       destfile = outFile, 
                       quiet    = FALSE, 
                       mode     = 'wb')

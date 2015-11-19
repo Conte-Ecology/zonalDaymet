@@ -8,18 +8,24 @@ returnRecordsByCoordinates(areaExtent, mosaicFile, outputFormat = "long",
   startDate, endDate)
 }
 \arguments{
-\item{areaExtent}{Vector string of numeric values specifying the bounding latitude and longitude coordinates of the boundary box. All points within these bounds will be retrieved. The format is: c(Minimum Longitude, Maximum Longitude, Minimum Latitude, Maximum Latitude).}
+\item{areaExtent}{Vector string of numeric values specifying the bounding latitude and longitude
+coordinates of the boundary box. All points within these bounds will be retrieved. The format is:
+c(Minimum Longitude, Maximum Longitude, Minimum Latitude, Maximum Latitude).}
 
 \item{mosaicFile}{Character string of the file path to the netCDF mosiac file to access.}
 
-\item{outputFormat}{A character string of the format of the dataframe output. Options are "wide" or "long" defaulting to "long".}
+\item{outputFormat}{A character string of the format of the dataframe output. Options are "wide"
+or "long" defaulting to "long".}
 
-\item{startDate}{A character string of the first date to return. This date must match the year of the mosaic file. The format is: "yyyy-mm-dd"}
+\item{startDate}{A character string of the first date to return. This date must match the year of
+the mosaic file. The format is: "yyyy-mm-dd"}
 
-\item{endDate}{A character string of the last date to return. This date must match the year of the mosaic file. The format is: "yyyy-mm-dd"}
+\item{endDate}{A character string of the last date to return. This date must match the year of the
+mosaic file. The format is: "yyyy-mm-dd"}
 }
 \description{
-The \code{returnRecordsByCoordinates} function returns the climate records for a section of the mosaic file specified by coordinate bounds.
+The \code{returnRecordsByCoordinates} function returns the climate records for a section of the
+mosaic file specified by coordinate bounds.
 }
 \examples{
 returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),

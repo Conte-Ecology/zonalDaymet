@@ -1,11 +1,11 @@
 #' @title Assign climate record to zones
 #'
 #' @description 
-#' \code The {assignZonalRecordsToDataframe} function patially averages climate records from the 
+#' The \code{assignZonalRecordsToDataframe} function patially averages climate records from the 
 #' netCDF mosaic files over zones defined by spatial polygons and returns a dataframe. 
 #' If the shapefile is large enough to cause memory problems, the function can be iterated over the 
 #' results of the {tileShapefile} function which splits the spatial polygon into manageable chunks. The 
-#'  function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
+#' function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
 #'
 #' @param zonesShapefile A SpatialPolygonsDataFrame of the zones which will be assigned climate records. 
 #' The object should have a unique ID column and be in the WGS geographic coordinate system (same as the 
@@ -28,9 +28,12 @@ assignZonalRecordsToDataframe <- function(zonesShapefile, zoneField, mosaicDirec
   # Reference NetCDF indeces
   # ------------------------  
   # Subsets the Daymet mosaic netcdf file based on the provided shapefile
-  spatialIndeces <- determineSpatialRelationships(zonesShapefile      = zonesShapefile,
-                                                  zoneField           = zoneField,
-                                                  exampleMosaicFile   = file.path(mosaicDirectory, paste0(variables[1], '_', years[1], '.nc4') ) )
+  spatialIndeces <- determineSpatialRelationships(zonesShapefile    = zonesShapefile,
+                                                  zoneField         = zoneField,
+                                                  exampleMosaicFile = file.path(mosaicDirectory, 
+                                                                                paste0(variables[1], 
+                                                                                       '_', years[1], 
+                                                                                       '.nc4') ) )
   
   
   # Process NetCDF data
@@ -49,7 +52,10 @@ assignZonalRecordsToDataframe <- function(zonesShapefile, zoneField, mosaicDirec
       print(paste0("Spatially averaging '", variable, "' records in ", yr, "." ))
       
       # Average the daymet points that fall inside each polygon      
-      record <- spatialAverageSingleFile(mosaicFilePath = file.path(mosaicDirectory, paste0(variable, '_', yr, '.nc4')), 
+      record <- spatialAverageSingleFile(mosaicFilePath = file.path(mosaicDirectory, 
+                                                                    paste0(variable, 
+                                                                           '_', yr, 
+                                                                           '.nc4')), 
                                          spatialIndeces = spatialIndeces, 
                                          zoneField      = zoneField)       
       
