@@ -23,7 +23,7 @@ records.
 Polygons are assigned to tiles based on where their centroids are located.
 The spatial object should be in the Daymet coordinate system before executing the function.
 This function only works for SpatialPolygonsDataFrame with units that are lat/lon.
-The \code{spTransform} function can be used to transform the object from a projected to a
+The "spTransform" function can be used to transform the object from a projected to a
 geographic coordinate system.
 }
 \examples{
