@@ -22,10 +22,10 @@ returnRecordsByCoordinates(areaExtent, mosaicFile, outputFormat = "long",
 The \code{returnRecordsByCoordinates} function returns the climate records for a section of the mosaic file specified by coordinate bounds.
 }
 \examples{
-returnRecordsByCoordinates(c(-71.0, -70.0, 42.0, 43.0),
-                           "C:/USER/Data/Daymet/prcp_2010.nc4",
-                           "long",
-                           "2010-01-01",
-                           "2010-01-31")
+returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),
+                           mosaicFile = "C:/USER/Data/Daymet/prcp_2010.nc4",
+                           outputFormat = "long",
+                           startDate = "2010-01-01",
+                           endDate = "2010-01-31")
 }
 

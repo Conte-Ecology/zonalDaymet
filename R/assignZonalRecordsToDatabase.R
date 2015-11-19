@@ -1,7 +1,7 @@
 #' @title Assign climate record to zones
 #'
 #' @description 
-#' \code The {assignZonalRecordsToDatabase} function spatially averages climate records from the 
+#'  The \code{assignZonalRecordsToDatabase} function spatially averages climate records from the 
 #'  netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database. 
 #'  If the shapefile is large enough to cause memory problems, the function can be iterated over the 
 #'  results of the {tileShapefile} function which splits the spatial polygon into manageable chunks. The 

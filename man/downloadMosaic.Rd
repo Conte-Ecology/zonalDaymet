@@ -4,7 +4,7 @@
 \alias{downloadMosaic}
 \title{Download netCDF mosaic files.}
 \usage{
-downloadMosaic(years, variables, destinationFolder,
+downloadMosaic(years, variables, destinationDirectory,
   retryFailedDownloads = TRUE)
 }
 \arguments{
@@ -12,17 +12,19 @@ downloadMosaic(years, variables, destinationFolder,
 
 \item{variables}{A character vector specifying the variables to download}
 
-\item{destinationFolder}{Character string of the file path to the target folder for downloaded files}
+\item{destinationDirectory}{Character string of the file path to the target folder for downloaded files}
 
 \item{retryFailedDownloads}{logical; If TRUE the function will check (by opening) to see if the netCDF files are corrupt.}
 }
 \description{
-The \code{downloadMosaic} function downloads mosaic NetCDF files from the Daymet THREDDS server for the variables and years specified.
+The \code{downloadMosaic} function downloads mosaic NetCDF files from the Daymet THREDDS server
+for the variables and years specified. Currently, the web address is hard-coded into the function.
+If and when this address is updated, a change will need to be made to the function code.
 }
 \examples{
-downloadMosaic(1980:1990,
-               c("tmin", "tmax", "prcp"),
-               "C:/USER/Data/Daymet",
-               TRUE)
+downloadMosaic(years                = 1980:1990,
+               variables            = c("tmin", "tmax", "prcp"),
+               destinationDirectory = "C:/USER/Data/Daymet",
+               retryFailedDownloads = TRUE)
 }
 

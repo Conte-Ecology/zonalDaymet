@@ -10,11 +10,11 @@
 #' @param endDate A character string of the last date to return. This date must match the year of the mosaic file. The format is: "yyyy-mm-dd"
 #'
 #' @examples
-#' returnRecordsByCoordinates(c(-71.0, -70.0, 42.0, 43.0),
-#'                            "C:/USER/Data/Daymet/prcp_2010.nc4",
-#'                            "long",
-#'                            "2010-01-01",
-#'                            "2010-01-31")
+#' returnRecordsByCoordinates(areaExtent = c(-71.0, -70.0, 42.0, 43.0),
+#'                            mosaicFile = "C:/USER/Data/Daymet/prcp_2010.nc4",
+#'                            outputFormat = "long",
+#'                            startDate = "2010-01-01",
+#'                            endDate = "2010-01-31")
 #'
 #' @export
 returnRecordsByCoordinates <- function(areaExtent, mosaicFile, outputFormat = "long", startDate, endDate){

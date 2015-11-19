@@ -9,7 +9,9 @@ assignZonalRecordsToDatabase(zonesShapefile, zoneField, zoneFieldType = NULL,
   databaseTableName = NULL)
 }
 \arguments{
-\item{zonesShapefile}{A SpatialPolygonsDataFrame of the zones which will be assigned climate records. The object should have a unique ID column and be in the WGS geographic coordinate system (same as the Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0").}
+\item{zonesShapefile}{A SpatialPolygonsDataFrame of the zones which will be assigned climate records.
+The object should have a unique ID column and be in the WGS geographic coordinate system (same as the
+Daymet NetCDF files, proj4string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0").}
 
 \item{zoneField}{Character string of the field name describing the unique ID values that define the zones.}
 
@@ -26,16 +28,20 @@ assignZonalRecordsToDatabase(zonesShapefile, zoneField, zoneFieldType = NULL,
 \item{databaseTableName}{Character string of the name of the table to create/write to in the database.}
 }
 \description{
-\code{assignZonalRecordsToDatabase} Spatially averages climate records from the Daymet netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database. If the shapefile is large enough to cause memory problems, the function can be iterated over the results of the "tileShapefile" function.
+\code The {assignZonalRecordsToDatabase} function spatially averages climate records from the
+ netCDF mosaic files over zones defined by spatial polygons and exports directly to a SQLite database.
+ If the shapefile is large enough to cause memory problems, the function can be iterated over the
+ results of the {tileShapefile} function which splits the spatial polygon into manageable chunks. The
+ function relies on the default naming scheme for the netCDF mosaics (e.g. "prcp_2008.nc4").
 }
 \examples{
-assignZonalRecordsToDatabase(spatialPolygonsDataFrame,
-                                       "UNIQUE_ID",
-                                       "integer",
-                                       "C:/USER/Data/Daymet",
-                                       c("tmin", "tmax", "prcp"),
-                                       1980:1990,
-                                       "C:/USER/Data/Databases/DaymetDB",
-                                       "climate_record")
+assignZonalRecordsToDatabase(zonesShapefile    = spatialPolygonsDataFrame,
+                             zoneField         = "UNIQUE_ID",
+                             zoneFieldType     = "integer",
+                             mosaicDirectory   = "C:/USER/Data/Daymet",
+                             variables         = c("tmin", "tmax", "prcp"),
+                             years             = 1980:1990,
+                             databaseFilePath  = "C:/USER/Data/Databases/DaymetDB",
+                             databaseTableName = "climate_record")
 }
 
