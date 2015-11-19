@@ -1,7 +1,9 @@
 #' @title Download netCDF mosaic files.
 #'
 #' @description
-#' The \code{downloadMosaic} function downloads mosaic NetCDF files from the Daymet THREDDS server for the variables and years specified.
+#' The \code{downloadMosaic} function downloads mosaic NetCDF files from the Daymet THREDDS server 
+#' for the variables and years specified. Currently, the web address is hard-coded into the function.
+#' If and when this address is updated, a change will need to be made to the function code.
 #'
 #' @param years A numeric vector specifying the years to download
 #' @param variables A character vector specifying the variables to download
@@ -9,10 +11,10 @@
 #' @param retryFailedDownloads logical; If TRUE the function will check (by opening) to see if the netCDF files are corrupt.
 #' 
 #' @examples
-#' downloadMosaic(1980:1990, 
-#'                c("tmin", "tmax", "prcp"), 
-#'                "C:/USER/Data/Daymet", 
-#'                TRUE)
+#' downloadMosaic(years                = 1980:1990, 
+#'                variables            = c("tmin", "tmax", "prcp"), 
+#'                destinationDirectory = "C:/USER/Data/Daymet", 
+#'                retryFailedDownloads = TRUE)
 #' 
 #' @export 
 downloadMosaic <- function(years, variables, destinationDirectory, retryFailedDownloads = TRUE){
@@ -49,7 +51,7 @@ downloadMosaic <- function(years, variables, destinationDirectory, retryFailedDo
         beg <- proc.time()[3]
         
         # Download the file from the THREDDS server
-        download.file(url      = paste0('http://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1219/', year, '/', var, '_', year, '.nc4'), 
+        download.file(url      = paste0('https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1219/', year, '/', var, '_', year, '.nc4'), 
                       destfile = outFile, 
                       quiet    = FALSE, 
                       mode     = 'wb')
