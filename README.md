@@ -46,9 +46,9 @@ useful format in R.
 ## Package Installation
 Currently, the package is only available through GitHub. It can be installed using the `devtools` package by executing the following commands in the R workspace:
 
-`library(devtools)`
-`install_github("Conte-Ecology/zonalDaymet")`
-`library(zonalDaymet)`
+>`library(devtools)`
+>`install_github("Conte-Ecology/zonalDaymet")`
+>`library(zonalDaymet)`
 
 ## Contact Info
 
