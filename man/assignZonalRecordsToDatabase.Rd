@@ -36,8 +36,8 @@ netCDF mosaic files over zones defined by spatial polygons and exports directly 
 }
 \details{
 The netCDF files are read and spatially indexed using custom internal functions. The climate time series
-area assigned to the zones represented by the "zonesShapefile" object. If only one record falls into a polygon
-it is assigned. If multuple records fall into a single polygon, they are averaged. If no records
+are assigned to the zones represented by the "zonesShapefile" object. If only one record falls into a polygon
+it is assigned directly. If multuple records fall into a single polygon, they are averaged. If no records
 fall into a polygon, the record nearest to the polygon centroid is assigned. The ouput is written to a SQLite
 database in long format with columns for the "zoneField", date, and each of the climate variables.
 
