@@ -66,13 +66,13 @@ assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldTyp
   # Reference NetCDF indeces
   # ------------------------
   # Subsets the Daymet mosaic netcdf file based on the provided shapefile
+  mosaicFile <- file.path(
+    mosaicDirectory, 
+    paste0("daymet_v3_", variables[1], "_", years[1], "_na.nc4")
+  )
   spatialIndeces <- determineSpatialRelationships(zonesShapefile    = zonesShapefile,
                                                   zoneField         = zoneField,
-                                                  exampleMosaicFile = file.path(mosaicDirectory, 
-                                                                                paste0(variables[1], 
-                                                                                       '_', 
-                                                                                       years[1], 
-                                                                                       '.nc4') ) )
+                                                  exampleMosaicFile = mosaicFile )
   
   # Process NetCDF data
   # -------------------
@@ -89,7 +89,7 @@ assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldTyp
       print(paste0("Spatially averaging '", variable, "' records in ", yr, "." ))
             
       # Average the daymet points that fall inside each polygon
-      record <- spatialAverageSingleFile(mosaicFilePath = file.path(mosaicDirectory, paste0(variable, '_', yr, '.nc4')), 
+      record <- spatialAverageSingleFile(mosaicFilePath = file.path(mosaicDirectory, paste0("daymet_v3_", variable, "_", year, "_na.nc4")), 
                                          spatialIndeces = spatialIndeces, 
                                          zoneField      = zoneField)       
       
