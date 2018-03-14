@@ -97,7 +97,7 @@ determineSpatialRelationships <- function(zonesShapefile, zoneField, exampleMosa
     shapePoints <- as.data.frame(cbind(as.vector(shapeLon), as.vector(shapeLat)))
     colnames(shapePoints) <- c("Longitude", "Latitude")
     shapePointsSpPts <- sp::SpatialPoints(shapePoints, 
-                                          proj4string = CRS(proj4string(zonesShapefile)))
+                                          proj4string = sp::CRS(proj4string(zonesShapefile)))
       
     
     # Assigning Records
