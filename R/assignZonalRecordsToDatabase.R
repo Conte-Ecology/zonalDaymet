@@ -89,7 +89,7 @@ assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldTyp
       print(paste0("Spatially averaging '", variable, "' records in ", yr, "." ))
             
       # Average the daymet points that fall inside each polygon
-      record <- spatialAverageSingleFile(mosaicFilePath = file.path(mosaicDirectory, paste0("daymet_v3_", variable, "_", year, "_na.nc4")), 
+      record <- spatialAverageSingleFile(mosaicFilePath = file.path(mosaicDirectory, paste0("daymet_v3_", variable, "_", yr, "_na.nc4")), 
                                          spatialIndeces = spatialIndeces, 
                                          zoneField      = zoneField)       
       
