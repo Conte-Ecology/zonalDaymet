@@ -74,7 +74,7 @@ spatialAverageSingleFile <- function(mosaicFilePath, spatialIndeces, zoneField){
   
   # Take the mean of the points inside a catchment
   varMeans <-  group_by_(varPoints, zoneField) %>% 
-                  summarise_each(funs(mean(.,na.rm = T))) %>%
+                  summarise_all(funs(mean(.,na.rm = T))) %>%
                   ungroup()
   
   # Melt means into output format
