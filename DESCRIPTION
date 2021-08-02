@@ -1,6 +1,6 @@
 Package: zonalDaymet
 Title: A toolset to process Daymet climate records
-Version: 1.0
+Version: 1.1
 Authors@R: person("Kyle", "O'Neil", email = "koneil@usgs.gov", role = c("aut", "cre"))
 Description: The package provides tools to download NetCDF climate mosaics 
 	from the Daymet THREDDS Server, spatially average climate records over 

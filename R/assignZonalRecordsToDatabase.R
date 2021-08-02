@@ -17,6 +17,7 @@
 #' @param databaseFilePath Character string of the file path to the database to write to. If it does not 
 #' exist, one will be created.
 #' @param databaseTableName Character string of the name of the table to create/write to in the database.
+#' @param daymetVersion Numeric version of daymet (default = 4)
 #' 
 #' @details
 #' The netCDF files are read and spatially indexed using custom internal functions. The climate time series 
@@ -38,11 +39,13 @@
 #'                              variables         = c("tmin", "tmax", "prcp"),
 #'                              years             = 1980:1990, 
 #'                              databaseFilePath  = "C:/USER/Data/Databases/DaymetDB",
-#'                              databaseTableName = "climate_record")
+#'                              databaseTableName = "climate_record"
+#'                              daymetVersion     = 4)
 #' 
 #' @export 
 assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldType = NULL, mosaicDirectory, 
-                                         variables, years, databaseFilePath = NULL, databaseTableName = NULL){
+                                         variables, years, databaseFilePath = NULL, databaseTableName = NULL,
+                                         daymetVersion = 4){
     
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop("The RSQLite is required for this function to work. Please install it.",
@@ -66,10 +69,19 @@ assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldTyp
   # Reference NetCDF indeces
   # ------------------------
   # Subsets the Daymet mosaic netcdf file based on the provided shapefile
-  mosaicFile <- file.path(
-    mosaicDirectory, 
-    paste0("daymet_v3_", variables[1], "_", years[1], "_na.nc4")
-  )
+  if (daymetVersion == 3) {
+    mosaicFile <- file.path(
+      mosaicDirectory, 
+      paste0("daymet_v3_", variables[1], "_", years[1], "_na.nc4")
+    )
+  } else if (daymetVersion == 4) {
+    mosaicFile <- file.path(
+      mosaicDirectory, 
+      paste0("daymet_v4_daily_na_", variables[1], "_", years[1], ".nc")
+    )
+  } else {
+    stop("Unsupport daymet version (must be 3 or 4)")
+  }
   spatialIndeces <- determineSpatialRelationships(zonesShapefile    = zonesShapefile,
                                                   zoneField         = zoneField,
                                                   exampleMosaicFile = mosaicFile )
@@ -89,7 +101,20 @@ assignZonalRecordsToDatabase <- function(zonesShapefile, zoneField, zoneFieldTyp
       print(paste0("Spatially averaging '", variable, "' records in ", yr, "." ))
             
       # Average the daymet points that fall inside each polygon
-      record <- spatialAverageSingleFile(mosaicFilePath = file.path(mosaicDirectory, paste0("daymet_v3_", variable, "_", yr, "_na.nc4")), 
+      if (daymetVersion == 3) {
+        mosaicFilePath <- file.path(
+          mosaicDirectory, 
+          paste0("daymet_v3_", variables[1], "_", years[1], "_na.nc4")
+        )
+      } else if (daymetVersion == 4) {
+        mosaicFilePath <- file.path(
+          mosaicDirectory, 
+          paste0("daymet_v4_daily_na_", variables[1], "_", years[1], ".nc")
+        )
+      } else {
+        stop("Unsupport daymet version (must be 3 or 4)")
+      }
+      record <- spatialAverageSingleFile(mosaicFilePath = mosaicFilePath, 
                                          spatialIndeces = spatialIndeces, 
                                          zoneField      = zoneField)       
       
